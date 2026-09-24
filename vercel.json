@@ -1,4 +1,6 @@
 {
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/((?!assets/|sitemap\\.xml|robots\\.txt|manifest\\.json|feed\\.xml|sw\\.js|registerSW\\.js|workbox-.*\\.js).*)", "destination": "/index.html" }
   ]
