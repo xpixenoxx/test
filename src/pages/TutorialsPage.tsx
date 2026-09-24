@@ -33,29 +33,29 @@ const TutorialsPage: React.FC<TutorialsPageProps> = ({ onBack, onRegisterClick }
 
   useEffect(() => {
     updatePageMeta(
-      'Guides | OpenHRApp',
-      'Step-by-step guides to help you get the most out of OpenHRApp. Learn attendance tracking, leave management, employee directory, and more.',
-      'https://openhrapp.com/how-to-use'
+      'Guides | Pixenox',
+      'Step-by-step guides to help you get the most out of Pixenox. Learn attendance tracking, leave management, employee directory, and more.',
+      'https://pixenox.com/how-to-use'
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'CollectionPage',
-          name: 'OpenHRApp Guides',
-          description: 'Step-by-step guides to help you get the most out of OpenHRApp. Learn attendance tracking, leave management, employee directory, and more.',
-          url: 'https://openhrapp.com/how-to-use',
+          name: 'Pixenox Guides',
+          description: 'Step-by-step guides to help you get the most out of Pixenox. Learn attendance tracking, leave management, employee directory, and more.',
+          url: 'https://pixenox.com/how-to-use',
           isPartOf: {
             '@type': 'WebSite',
-            name: 'OpenHRApp',
-            url: 'https://openhrapp.com',
+            name: 'Pixenox',
+            url: 'https://pixenox.com',
           },
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-            { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://openhrapp.com/how-to-use' },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://pixenox.com/how-to-use' },
           ],
         },
       ],
@@ -112,7 +112,7 @@ const TutorialsPage: React.FC<TutorialsPageProps> = ({ onBack, onRegisterClick }
       <div className="bg-dl-surface border-b border-dl-hair-soft">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
           <h1 className="text-4xl font-semibold text-dl-ink tracking-tight">Guides</h1>
-          <p className="text-dl-muted mt-3 text-lg">Step-by-step guides to help you get the most out of OpenHRApp</p>
+          <p className="text-dl-muted mt-3 text-lg">Step-by-step guides to help you get the most out of Pixenox</p>
         </div>
       </div>
 

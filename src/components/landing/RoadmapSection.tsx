@@ -5,7 +5,7 @@ const roadmapItems = [
   {
     icon: Banknote,
     title: 'Payroll Engine',
-    description: 'Basic salary calculation with export to common payroll formats. Streamline your payroll processing directly within OpenHRApp.',
+    description: 'Basic salary calculation with export to common payroll formats. Streamline your payroll processing directly within Pixenox.',
   },
   {
     icon: TrendingUp,
@@ -35,7 +35,7 @@ const RoadmapSection: React.FC = () => {
             Coming Soon
           </h2>
           <p className="text-dl-muted text-lg">
-            We're always working on new features to make OpenHRApp even better. Here's what's on the horizon — vote for the ones you care about most.
+            We're always working on new features to make Pixenox even better. Here's what's on the horizon — vote for the ones you care about most.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ const RoadmapSection: React.FC = () => {
         {/* Request a Feature CTA */}
         <div className="text-center mt-10">
           <a
-            href="https://github.com/mimnets/openhrapp/issues/new?labels=feature-request&template=feature_request.md"
+            href="https://github.com/mimnets/pixenox/issues/new?labels=feature-request&template=feature_request.md"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-dl-teal border border-dl-teal/25 rounded-dl-md hover:bg-dl-teal/5 transition-colors"

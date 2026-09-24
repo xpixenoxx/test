@@ -2,7 +2,7 @@
  * SEO utilities for clean URL navigation, meta tags, and structured data.
  */
 
-const SITE_ORIGIN = 'https://openhrapp.com';
+const SITE_ORIGIN = 'https://pixenox.com';
 const DEFAULT_SOCIAL_IMAGE = `${SITE_ORIGIN}/img/screenshot-wide.png`;
 
 /** Navigate to a clean URL path using pushState + popstate dispatch. */

@@ -61,7 +61,7 @@ describe('dynamic sitemap', () => {
   });
 
   it('serves XML with the correct content type', async () => {
-    const res = await middleware(req('https://openhrapp.com/sitemap.xml'));
+    const res = await middleware(req('https://pixenox.com/sitemap.xml'));
     expect(res).toBeDefined();
     expect(res!.headers.get('Content-Type')).toBe('application/xml; charset=utf-8');
     expect(res!.headers.get('X-Sitemap')).toBe('dynamic');
@@ -70,27 +70,27 @@ describe('dynamic sitemap', () => {
   it('serves to a plain browser, not just crawlers', async () => {
     // Search Console fetches the sitemap without a crawler user-agent, so this
     // must not sit behind the bot check.
-    const res = await middleware(req('https://openhrapp.com/sitemap.xml', CHROME));
+    const res = await middleware(req('https://pixenox.com/sitemap.xml', CHROME));
     expect(res).toBeDefined();
     expect(await res!.text()).toContain('<urlset');
   });
 
   it('includes every published post and tutorial', async () => {
-    const xml = await (await middleware(req('https://openhrapp.com/sitemap.xml')))!.text();
-    expect(xml).toContain('<loc>https://openhrapp.com/blog/how-to-stop-buddy-punching</loc>');
-    expect(xml).toContain('<loc>https://openhrapp.com/blog/leave-management-best-practices</loc>');
-    expect(xml).toContain('<loc>https://openhrapp.com/how-to-use/setting-up-organization</loc>');
+    const xml = await (await middleware(req('https://pixenox.com/sitemap.xml')))!.text();
+    expect(xml).toContain('<loc>https://pixenox.com/blog/how-to-stop-buddy-punching</loc>');
+    expect(xml).toContain('<loc>https://pixenox.com/blog/leave-management-best-practices</loc>');
+    expect(xml).toContain('<loc>https://pixenox.com/how-to-use/setting-up-organization</loc>');
   });
 
   it('includes the static marketing pages', async () => {
-    const xml = await (await middleware(req('https://openhrapp.com/sitemap.xml')))!.text();
-    expect(xml).toContain('<loc>https://openhrapp.com/</loc>');
-    expect(xml).toContain('<loc>https://openhrapp.com/privacy</loc>');
-    expect(xml).toContain('<loc>https://openhrapp.com/features/attendance-tracking</loc>');
+    const xml = await (await middleware(req('https://pixenox.com/sitemap.xml')))!.text();
+    expect(xml).toContain('<loc>https://pixenox.com/</loc>');
+    expect(xml).toContain('<loc>https://pixenox.com/privacy</loc>');
+    expect(xml).toContain('<loc>https://pixenox.com/features/attendance-tracking</loc>');
   });
 
   it('prefers updated over published_at for lastmod, and omits it when absent', async () => {
-    const xml = await (await middleware(req('https://openhrapp.com/sitemap.xml')))!.text();
+    const xml = await (await middleware(req('https://pixenox.com/sitemap.xml')))!.text();
     const entry = xml.slice(xml.indexOf('/blog/how-to-stop-buddy-punching'));
     expect(entry.slice(0, 200)).toContain('<lastmod>2026-08-01</lastmod>');
 
@@ -100,20 +100,20 @@ describe('dynamic sitemap', () => {
 
   it('queries only PUBLISHED rows', async () => {
     const mock = mockSupabase();
-    await middleware(req('https://openhrapp.com/sitemap.xml'));
+    await middleware(req('https://pixenox.com/sitemap.xml'));
     for (const call of mock.mock.calls) {
       expect(String(call[0])).toContain('status=eq.PUBLISHED');
     }
   });
 
   it('caches at the edge so a crawl burst costs one round trip', async () => {
-    const res = await middleware(req('https://openhrapp.com/sitemap.xml', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/sitemap.xml', GOOGLEBOT));
     expect(res!.headers.get('Cache-Control')).toContain('s-maxage=3600');
   });
 
   it('produces well-formed, escaped XML for awkward slugs', async () => {
     mockSupabase({ posts: [{ slug: 'a&b', updated: '2026-01-01T00:00:00Z', published_at: null }] });
-    const xml = await (await middleware(req('https://openhrapp.com/sitemap.xml')))!.text();
+    const xml = await (await middleware(req('https://pixenox.com/sitemap.xml')))!.text();
     expect(xml).toContain('/blog/a&amp;b');
     expect(xml).not.toMatch(/\/blog\/a&b</);
   });
@@ -122,24 +122,24 @@ describe('dynamic sitemap', () => {
 describe('dynamic sitemap — failure modes fall through to the static file', () => {
   it('falls through when the blog query fails', async () => {
     mockSupabase({ fail: 'blog_posts' });
-    expect(await middleware(req('https://openhrapp.com/sitemap.xml'))).toBeUndefined();
+    expect(await middleware(req('https://pixenox.com/sitemap.xml'))).toBeUndefined();
   });
 
   it('falls through when the tutorial query fails', async () => {
     mockSupabase({ fail: 'tutorials' });
-    expect(await middleware(req('https://openhrapp.com/sitemap.xml'))).toBeUndefined();
+    expect(await middleware(req('https://pixenox.com/sitemap.xml'))).toBeUndefined();
   });
 
   it('falls through when both queries return nothing', async () => {
     // An empty result is far more likely to be a broken query than a genuinely
     // empty site — the exact failure that emptied the sitemap before.
     mockSupabase({ posts: [], tutorials: [] });
-    expect(await middleware(req('https://openhrapp.com/sitemap.xml'))).toBeUndefined();
+    expect(await middleware(req('https://pixenox.com/sitemap.xml'))).toBeUndefined();
   });
 
   it('still emits when only one of the two tables has rows', async () => {
     mockSupabase({ posts: [], tutorials: TUTORIALS });
-    const res = await middleware(req('https://openhrapp.com/sitemap.xml'));
+    const res = await middleware(req('https://pixenox.com/sitemap.xml'));
     expect(res).toBeDefined();
     expect(await res!.text()).toContain('/how-to-use/setting-up-organization');
   });
@@ -178,24 +178,24 @@ describe('contact page', () => {
   });
 
   it('appears in the dynamic sitemap', async () => {
-    const xml = await (await middleware(req('https://openhrapp.com/sitemap.xml')))!.text();
-    expect(xml).toContain('<loc>https://openhrapp.com/contact</loc>');
+    const xml = await (await middleware(req('https://pixenox.com/sitemap.xml')))!.text();
+    expect(xml).toContain('<loc>https://pixenox.com/contact</loc>');
   });
 
   it('prerenders for indexing crawlers instead of the empty SPA shell', async () => {
     // AdSense reviewers and search crawlers specifically look for a reachable
     // contact page; without a resolver it would serve the generic shell.
-    const res = await middleware(req('https://openhrapp.com/contact', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/contact', GOOGLEBOT));
     expect(res).toBeDefined();
     expect(res!.headers.get('X-Prerender')).toBe('index-bot');
 
     const html = await res!.text();
     expect(html).toContain('Get in touch');
-    expect(html).toContain('mailto:support@openhrapp.com');
-    expect(html).toContain('https://openhrapp.com/contact');
+    expect(html).toContain('mailto:support@pixenox.com');
+    expect(html).toContain('https://pixenox.com/contact');
   });
 
   it('leaves real browsers to the SPA', async () => {
-    expect(await middleware(req('https://openhrapp.com/contact', CHROME))).toBeUndefined();
+    expect(await middleware(req('https://pixenox.com/contact', CHROME))).toBeUndefined();
   });
 });

@@ -10,7 +10,7 @@ interface AboutPageProps {
 }
 
 const stats = [
-  { icon: Users, value: '50+', label: 'Organizations Using OpenHRApp' },
+  { icon: Users, value: '50+', label: 'Organizations Using Pixenox' },
   { icon: Code, value: '100%', label: 'Open Source (MIT License)' },
   { icon: Globe, value: 'PWA', label: 'Works on Any Device' },
 ];
@@ -29,12 +29,12 @@ const values = [
   {
     icon: Users,
     title: 'Community-Driven',
-    description: 'OpenHRApp is shaped by the people who use it. Feature requests, bug reports, and community contributions directly influence our development priorities.',
+    description: 'Pixenox is shaped by the people who use it. Feature requests, bug reports, and community contributions directly influence our development priorities.',
   },
   {
     icon: GitBranch,
     title: 'Built for Scale',
-    description: 'Whether you have 5 employees or 500, OpenHRApp scales with you. Role-based access control, multi-department support, and configurable workflows adapt to your needs.',
+    description: 'Whether you have 5 employees or 500, Pixenox scales with you. Role-based access control, multi-department support, and configurable workflows adapt to your needs.',
   },
 ];
 
@@ -42,29 +42,29 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     updatePageMeta(
-      'About OpenHRApp — Free Open-Source HR Management Platform',
-      'Learn about the team, mission, and values behind OpenHRApp. A free, open-source HR platform built to make HR management accessible to organizations of every size.',
-      'https://openhrapp.com/about'
+      'About Pixenox — Free Open-Source HR Management Platform',
+      'Learn about the team, mission, and values behind Pixenox. A free, open-source HR platform built to make HR management accessible to organizations of every size.',
+      'https://pixenox.com/about'
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'AboutPage',
-          name: 'About OpenHRApp',
-          description: 'Learn about the team, mission, and values behind OpenHRApp — the free, open-source HR management platform.',
-          url: 'https://openhrapp.com/about',
+          name: 'About Pixenox',
+          description: 'Learn about the team, mission, and values behind Pixenox — the free, open-source HR management platform.',
+          url: 'https://pixenox.com/about',
           isPartOf: {
             '@type': 'WebSite',
-            name: 'OpenHRApp',
-            url: 'https://openhrapp.com',
+            name: 'Pixenox',
+            url: 'https://pixenox.com',
           },
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-            { '@type': 'ListItem', position: 2, name: 'About', item: 'https://openhrapp.com/about' },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+            { '@type': 'ListItem', position: 2, name: 'About', item: 'https://pixenox.com/about' },
           ],
         },
       ],
@@ -91,10 +91,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
             <Info className="text-dl-teal" size={32} />
           </div>
           <h1 className="text-4xl md:text-5xl font-semibold text-dl-ink tracking-tight mb-6">
-            About OpenHRApp
+            About Pixenox
           </h1>
           <p className="text-lg md:text-xl text-dl-muted max-w-3xl mx-auto leading-relaxed">
-            We're on a mission to make HR management accessible, transparent, and free for organizations everywhere. OpenHRApp is a community-driven, open-source HR platform built for the modern workplace.
+            We're on a mission to make HR management accessible, transparent, and free for organizations everywhere. Pixenox is a community-driven, open-source HR platform built for the modern workplace.
           </p>
         </div>
       </div>
@@ -108,16 +108,16 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
               <h2 className="text-2xl md:text-3xl font-bold text-dl-ink mb-6">Our Story</h2>
               <div className="prose prose-slate prose-lg max-w-none">
                 <p className="text-dl-muted leading-relaxed mb-4">
-                  OpenHRApp was born out of a simple frustration: HR software is too expensive and too complicated for most organizations. Small businesses, startups, non-profits, and growing teams were being priced out of tools they desperately needed — forced to choose between overpriced enterprise platforms and error-prone spreadsheets.
+                  Pixenox was born out of a simple frustration: HR software is too expensive and too complicated for most organizations. Small businesses, startups, non-profits, and growing teams were being priced out of tools they desperately needed — forced to choose between overpriced enterprise platforms and error-prone spreadsheets.
                 </p>
                 <p className="text-dl-muted leading-relaxed mb-4">
                   We asked a different question: <em>What if essential HR tools were free, open-source, and actually easy to use?</em>
                 </p>
                 <p className="text-dl-muted leading-relaxed mb-4">
-                  Starting in 2024, we began building OpenHRApp as an open-source project — a Progressive Web App that works on any device, with no downloads, no per-user pricing, and no hidden costs. Attendance tracking with selfie verification. Leave management with one-click approvals. Employee directories. Performance reviews. Reports. Everything a growing team needs, completely free.
+                  Starting in 2024, we began building Pixenox as an open-source project — a Progressive Web App that works on any device, with no downloads, no per-user pricing, and no hidden costs. Attendance tracking with selfie verification. Leave management with one-click approvals. Employee directories. Performance reviews. Reports. Everything a growing team needs, completely free.
                 </p>
                 <p className="text-dl-muted leading-relaxed">
-                  Today, OpenHRApp is used by organizations across multiple countries, helping HR teams save hours every week and giving employees a modern, intuitive experience. And because it's open source, the community continuously improves it — fixing bugs, adding features, and making it better for everyone.
+                  Today, Pixenox is used by organizations across multiple countries, helping HR teams save hours every week and giving employees a modern, intuitive experience. And because it's open source, the community continuously improves it — fixing bugs, adding features, and making it better for everyone.
                 </p>
               </div>
             </section>
@@ -153,7 +153,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
 
             {/* Stats Section */}
             <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-dl-ink mb-8 text-center">OpenHRApp by the Numbers</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-dl-ink mb-8 text-center">Pixenox by the Numbers</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {stats.map((stat) => (
                   <div
@@ -173,10 +173,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
               <Code size={40} className="mx-auto mb-4 text-dl-teal" />
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Proudly Open Source</h2>
               <p className="text-dl-surface/70 dark:text-dl-muted text-dl-base leading-relaxed max-w-2xl mx-auto mb-8">
-                OpenHRApp is licensed under the MIT license. Our entire codebase is available on GitHub. You can inspect the code, suggest improvements, report issues, or even self-host your own instance. We believe that HR software should be transparent — and that the best tools are built in the open.
+                Pixenox is licensed under the MIT license. Our entire codebase is available on GitHub. You can inspect the code, suggest improvements, report issues, or even self-host your own instance. We believe that HR software should be transparent — and that the best tools are built in the open.
               </p>
               <a
-                href="https://github.com/mimnets/openhrapp"
+                href="https://github.com/mimnets/pixenox"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-dl-surface text-dl-ink font-bold rounded-dl-md hover:bg-dl-hair-soft transition-colors text-sm"
@@ -191,7 +191,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, onRegisterClick }) => {
                 Ready to Get Started?
               </h2>
               <p className="text-dl-muted text-lg max-w-2xl mx-auto mb-8">
-                Join organizations around the world that use OpenHRApp to manage their HR. Free forever, no credit card required.
+                Join organizations around the world that use Pixenox to manage their HR. Free forever, no credit card required.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button

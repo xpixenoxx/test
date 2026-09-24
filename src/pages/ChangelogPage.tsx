@@ -26,17 +26,17 @@ const ChangelogPage: React.FC<ChangelogPageProps> = ({ onBack }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     updatePageMeta(
-      'Changelog — What\'s New in OpenHRApp | OpenHRApp',
-      'See all the latest updates, new features, bug fixes, and improvements to OpenHRApp. Track our development progress and stay up to date.',
-      'https://openhrapp.com/changelog'
+      'Changelog — What\'s New in Pixenox | Pixenox',
+      'See all the latest updates, new features, bug fixes, and improvements to Pixenox. Track our development progress and stay up to date.',
+      'https://pixenox.com/changelog'
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      name: 'OpenHRApp Changelog',
-      description: 'Complete history of updates, features, and fixes for OpenHRApp.',
-      url: 'https://openhrapp.com/changelog',
-      isPartOf: { '@type': 'WebSite', name: 'OpenHRApp', url: 'https://openhrapp.com' },
+      name: 'Pixenox Changelog',
+      description: 'Complete history of updates, features, and fixes for Pixenox.',
+      url: 'https://pixenox.com/changelog',
+      isPartOf: { '@type': 'WebSite', name: 'Pixenox', url: 'https://pixenox.com' },
     });
     return () => setJsonLd(null);
   }, []);
@@ -59,7 +59,7 @@ const ChangelogPage: React.FC<ChangelogPageProps> = ({ onBack }) => {
             Changelog
           </h1>
           <p className="text-lg text-dl-muted max-w-2xl">
-            All the updates, new features, and fixes shipped in OpenHRApp. We release improvements regularly to make HR management easier for your team.
+            All the updates, new features, and fixes shipped in Pixenox. We release improvements regularly to make HR management easier for your team.
           </p>
         </div>
       </section>

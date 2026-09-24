@@ -4,8 +4,6 @@ import Sidebar from '../components/Sidebar';
 import NotificationBell from '../components/notifications/NotificationBell';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { SubscriptionBanner } from '../components/subscription';
-
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -71,10 +69,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, currentPath, onNaviga
                  <div className="p-1.5 bg-white rounded-xl border border-primary/20 shadow-sm overflow-hidden md:hidden flex-shrink-0">
                     <img src="./img/logo.webp" className="w-10 h-10 object-contain" alt="Logo" />
                  </div>
-                 <h2 className="font-semibold text-xl tracking-tighter text-primary md:hidden truncate min-w-0">OpenHRApp</h2>
+                 <h2 className="font-semibold text-xl tracking-tighter text-primary md:hidden truncate min-w-0">Pixenox</h2>
                  <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border bg-slate-50 text-slate-400 border-slate-100">
                    <Database size={12} />
-                   <span className="text-[9px] font-semibold uppercase tracking-widest">Cloud Node Alpha</span>
+                   <span className="text-[9px] font-semibold uppercase tracking-widest">Pixenox HRM</span>
                  </div>
               </div>
            </div>
@@ -102,9 +100,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, currentPath, onNaviga
               </div>
            </div>
         </header>
-
-        {/* Subscription Banner - visible to all org users */}
-        <SubscriptionBanner onUpgradeClick={() => handleNavigate('upgrade')} userRole={user.role} onExitDemo={handleLogout} />
 
         {/* Content */}
         <div id="main-content" className="flex-1 p-6 md:p-12 w-full pb-28 md:pb-12 overflow-x-hidden">

@@ -153,7 +153,7 @@ export interface Attendance {
   location?: { lat: number; lng: number; address?: string };
   remarks?: string;
   selfie?: string;
-  dutyType?: 'OFFICE' | 'FACTORY';
+  dutyType?: 'WFH' | 'OFFICE';
   organizationId?: string;
 }
 
@@ -476,4 +476,243 @@ export interface PerformanceReview {
   hrOverallRating?: HROverallRating;
   finalizedBy?: string;
   organizationId: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  contactPerson?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  organizationId: string;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  description?: string;
+  clientId?: string;
+  startDate?: string;
+  endDate?: string;
+  status: 'PLANNING' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'CANCELLED';
+  managerId?: string;
+  budget?: number;
+  organizationId: string;
+}
+
+export interface ProjectMember {
+  id: string;
+  projectId: string;
+  employeeId: string;
+  role: string;
+  organizationId: string;
+}
+
+export interface Task {
+  id: string;
+  projectId: string;
+  title: string;
+  description?: string;
+  assignedTo?: string;
+  status: 'TODO' | 'IN_PROGRESS' | 'IN_REVIEW' | 'DONE';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  dueDate?: string;
+  organizationId: string;
+}
+
+export interface Timesheet {
+  id: string;
+  employeeId: string;
+  projectId: string;
+  taskId?: string;
+  date: string;
+  hours: number;
+  description?: string;
+  status: 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'REJECTED';
+  organizationId: string;
+}
+
+// ── Payroll ────────────────────────────────────────────────────────────────
+
+export interface SalaryStructure {
+  id: string;
+  name: string;
+  basicPercent: number;
+  hraPercent: number;
+  daPercent: number;
+  specialAllowancePercent: number;
+  pfEmployeePercent: number;
+  pfEmployerPercent: number;
+  esiEmployeePercent: number;
+  esiEmployerPercent: number;
+  professionalTax: number;
+  isDefault: boolean;
+  organizationId: string;
+}
+
+export interface EmployeeSalary {
+  id: string;
+  employeeId: string;
+  salaryStructureId?: string;
+  ctcAnnual: number;
+  effectiveFrom: string;
+  bankName?: string;
+  accountNumber?: string;
+  ifscCode?: string;
+  panNumber?: string;
+  organizationId: string;
+}
+
+export interface PayrollRun {
+  id: string;
+  month: number;
+  year: number;
+  status: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
+  processedBy?: string;
+  processedAt?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  totalGross: number;
+  totalDeductions: number;
+  totalNet: number;
+  notes?: string;
+  organizationId: string;
+}
+
+export interface Payslip {
+  id: string;
+  payrollRunId: string;
+  employeeId: string;
+  employeeName?: string;
+  month: number;
+  year: number;
+  // Earnings
+  basic: number;
+  hra: number;
+  da: number;
+  specialAllowance: number;
+  overtime: number;
+  bonus: number;
+  grossEarnings: number;
+  // Deductions
+  pfEmployee: number;
+  esiEmployee: number;
+  professionalTax: number;
+  tds: number;
+  otherDeductions: number;
+  loanDeduction: number;
+  totalDeductions: number;
+  // Net
+  netSalary: number;
+  // Attendance
+  workingDays: number;
+  daysPresent: number;
+  daysAbsent: number;
+  daysLeave: number;
+  lopDays: number;
+  lopDeduction: number;
+  status: 'GENERATED' | 'APPROVED' | 'PAID' | 'HELD';
+  remarks?: string;
+  organizationId: string;
+}
+
+export interface SalaryAdvance {
+  id: string;
+  employeeId: string;
+  amount: number;
+  reason?: string;
+  monthlyInstallment?: number;
+  remainingAmount?: number;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CLEARED';
+  approvedBy?: string;
+  appliedDate: string;
+  organizationId: string;
+}
+
+// ── Expenses ───────────────────────────────────────────────────────────────
+
+export interface Expense {
+  id: string;
+  organizationId: string;
+  employeeId: string;
+  category: string;
+  amount: number;
+  currency: string;
+  date: string;
+  merchant?: string;
+  description?: string;
+  receiptUrl?: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'REIMBURSED';
+  approvedBy?: string;
+  approvedAt?: string;
+  reimbursedAt?: string;
+  created?: string;
+  updated?: string;
+}
+
+// ── Assets ─────────────────────────────────────────────────────────────────
+
+export interface Asset {
+  id: string;
+  organizationId: string;
+  name: string;
+  category: string;
+  serialNumber?: string;
+  status: 'AVAILABLE' | 'ALLOCATED' | 'MAINTENANCE' | 'RETIRED';
+  assignedTo?: string;
+  assignedAt?: string;
+  condition?: string;
+  purchaseDate?: string;
+  purchaseCost?: number;
+  notes?: string;
+  created?: string;
+  updated?: string;
+}
+
+// ── Documents ──────────────────────────────────────────────────────────────
+
+export interface Document {
+  id: string;
+  organizationId: string;
+  name: string;
+  category: string;
+  fileUrl: string;
+  fileType?: string;
+  sizeBytes?: number;
+  ownerId?: string | null;
+  uploadedBy: string;
+  created?: string;
+  updated?: string;
+}
+
+// ── Invoicing ──────────────────────────────────────────────────────────────
+
+export interface InvoiceItem {
+  id: string;
+  invoiceId: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  amount: number;
+}
+
+export interface Invoice {
+  id: string;
+  organizationId: string;
+  clientId: string;
+  projectId?: string;
+  invoiceNumber: string;
+  date: string;
+  dueDate: string;
+  status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+  currency: string;
+  subtotal: number;
+  taxAmount: number;
+  totalAmount: number;
+  notes?: string;
+  created?: string;
+  updated?: string;
+  items?: InvoiceItem[];
 }

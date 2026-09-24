@@ -19,7 +19,7 @@ const FAQSection: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-dl-muted text-lg">
-            Everything you need to know about OpenHRApp.
+            Everything you need to know about Pixenox.
           </p>
         </div>
 

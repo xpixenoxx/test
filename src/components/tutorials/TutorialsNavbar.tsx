@@ -51,7 +51,7 @@ const TutorialsNavbar: React.FC<TutorialsNavbarProps> = ({ onBack: _onBack, onRe
             {/* Logo */}
             <div className={dlBrand.trigger} onClick={goHome}>
               <div className={dlBrand.frame}>
-                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="OpenHRApp" />
+                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="Pixenox" />
               </div>
               <span className={dlBrand.word}>
                 <span className={dlBrand.wordInk}>Open</span>

@@ -41,7 +41,7 @@ interface PendingSelfie {
   queuedAt: number;
 }
 
-const SELFIE_QUEUE_KEY = 'openhr_pending_selfies';
+const SELFIE_QUEUE_KEY = 'pixenox_pending_selfies';
 const MAX_SELFIE_RETRIES = 3;
 
 const readSelfieQueue = (): PendingSelfie[] => {

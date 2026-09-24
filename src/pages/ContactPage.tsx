@@ -25,7 +25,7 @@ interface ContactPageProps {
   onRegisterClick?: () => void;
 }
 
-const SUPPORT_EMAIL = 'support@openhrapp.com';
+const SUPPORT_EMAIL = 'support@pixenox.com';
 
 const channels = [
   {
@@ -38,7 +38,7 @@ const channels = [
     icon: Github,
     title: 'GitHub Issues',
     body: 'Bug reports and feature requests. Public, tracked, and the fastest route for anything technical.',
-    action: { label: 'github.com/mimnets/openhrapp', href: 'https://github.com/mimnets/openhrapp/issues' },
+    action: { label: 'github.com/mimnets/pixenox', href: 'https://github.com/mimnets/pixenox/issues' },
   },
   {
     icon: BookOpen,
@@ -52,28 +52,28 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onRegisterClick }) =>
   useEffect(() => {
     window.scrollTo(0, 0);
     updatePageMeta(
-      'Contact OpenHRApp — Support, Questions, and Feedback',
-      'Get in touch with the OpenHRApp team. Email support, report a bug on GitHub, or send a message directly — we read everything.',
-      'https://openhrapp.com/contact',
+      'Contact Pixenox — Support, Questions, and Feedback',
+      'Get in touch with the Pixenox team. Email support, report a bug on GitHub, or send a message directly — we read everything.',
+      'https://pixenox.com/contact',
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'ContactPage',
-          name: 'Contact OpenHRApp',
-          description: 'Get in touch with the OpenHRApp team for support, questions, or feedback.',
-          url: 'https://openhrapp.com/contact',
+          name: 'Contact Pixenox',
+          description: 'Get in touch with the Pixenox team for support, questions, or feedback.',
+          url: 'https://pixenox.com/contact',
           isPartOf: {
             '@type': 'WebSite',
-            name: 'OpenHRApp',
-            url: 'https://openhrapp.com',
+            name: 'Pixenox',
+            url: 'https://pixenox.com',
           },
         },
         {
           '@type': 'Organization',
-          name: 'OpenHRApp',
-          url: 'https://openhrapp.com',
+          name: 'Pixenox',
+          url: 'https://pixenox.com',
           contactPoint: [
             {
               '@type': 'ContactPoint',
@@ -86,8 +86,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onRegisterClick }) =>
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-            { '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://openhrapp.com/contact' },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://pixenox.com/contact' },
           ],
         },
       ],
@@ -121,7 +121,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onRegisterClick }) =>
             Get in touch
           </h1>
           <p className="text-lg text-dl-muted leading-relaxed">
-            Questions about setting OpenHRApp up, something behaving oddly, or an idea for what it
+            Questions about setting Pixenox up, something behaving oddly, or an idea for what it
             should do next — all of it is welcome. Messages go to a real inbox and we read every one.
           </p>
         </header>

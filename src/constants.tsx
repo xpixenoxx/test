@@ -2,33 +2,43 @@ import { AppConfig, CustomCompetency, CustomLeaveType, OrgReviewConfig, OrgNotif
 
 export const DEPARTMENTS = [
   "Engineering",
+  "Design",
+  "Product",
   "Human Resources",
-  "Finance",
+  "Finance & Accounts",
   "Operations",
   "Marketing",
   "Sales",
-  "Product",
-  "Factory"
+  "Quality Assurance",
+  "DevOps",
+  "Management"
 ];
 
 export const DESIGNATIONS = [
-  "Senior Developer",
+  "Founder & CEO",
+  "CTO",
+  "VP Engineering",
+  "Technical Lead",
+  "Senior Software Engineer",
+  "Software Engineer",
   "Junior Developer",
+  "UI/UX Designer",
+  "Product Manager",
+  "Project Manager",
+  "QA Engineer",
+  "DevOps Engineer",
   "HR Manager",
-  "Operations Lead",
-  "Finance Associate",
+  "HR Executive",
+  "Business Analyst",
   "Marketing Specialist",
-  "UX Designer",
-  "Factory Supervisor",
-  "Field Technician"
+  "Account Manager",
+  "Intern"
 ];
 
 export const OFFICE_LOCATIONS = [
-  { name: "Dhaka HQ (Gulshan)", lat: 23.7925, lng: 90.4078, radius: 500 },
-  { name: "Chittagong Branch", lat: 22.3569, lng: 91.7832, radius: 500 },
-  { name: "Sylhet Tech Hub", lat: 24.8949, lng: 91.8687, radius: 500 },
-  { name: "Factory Zone", lat: 23.9999, lng: 90.5000, radius: 2000 },
-  { name: "Remote Office", lat: 0, lng: 0, radius: 9999999 }
+  { name: "Pixenox HQ", lat: 28.6139, lng: 77.2090, radius: 500 },
+  { name: "WFH (Remote)", lat: 0, lng: 0, radius: 9999999 },
+  { name: "Client Site", lat: 0, lng: 0, radius: 9999999 }
 ];
 
 export const DEFAULT_COMPETENCIES: CustomCompetency[] = [
@@ -202,16 +212,16 @@ export const TIMEZONE_OPTIONS = [
 ];
 
 export const DEFAULT_CONFIG: AppConfig = {
-  companyName: "OpenHRApp Solutions Ltd.",
-  timezone: "UTC",
-  currency: "USD",
+  companyName: "Pixenox",
+  timezone: "Asia/Kolkata",
+  currency: "INR",
   dateFormat: "DD/MM/YYYY",
-  workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
-  officeStartTime: "09:00",
-  officeEndTime: "18:00",
-  lateGracePeriod: 5,
+  workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  officeStartTime: "10:00",
+  officeEndTime: "19:00",
+  lateGracePeriod: 10,
   earlyOutGracePeriod: 15,
   defaultReportRecipient: "",
-  dutyLabel1: "Office",
-  dutyLabel2: "Factory"
+  dutyLabel1: "WFH",
+  dutyLabel2: "Office"
 };

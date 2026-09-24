@@ -3,12 +3,12 @@ export const faqs = [
     category: 'General',
     items: [
       {
-        q: 'What is OpenHRApp?',
-        a: 'OpenHRApp is a modern, open-source HR management platform that helps organizations manage attendance, leave, and employee records in one place. It works as a Progressive Web App (PWA) on any device.',
+        q: 'What is Pixenox?',
+        a: 'Pixenox is a modern, open-source HR management platform that helps organizations manage attendance, leave, and employee records in one place. It works as a Progressive Web App (PWA) on any device.',
       },
       {
-        q: 'Is OpenHRApp really free?',
-        a: 'Yes — completely free. OpenHRApp is open-source software with no paywalls, no user limits, and no credit card required. The app is ad-supported. If you\'d like to support the project, you can make a small donation through Buy Me a Coffee.',
+        q: 'Is Pixenox really free?',
+        a: 'Yes — completely free. Pixenox is open-source software with no paywalls, no user limits, and no credit card required. The app is ad-supported. If you\'d like to support the project, you can make a small donation through Buy Me a Coffee.',
       },
     ],
   },
@@ -34,7 +34,7 @@ export const faqs = [
       },
       {
         q: 'What attendance modes are available?',
-        a: 'OpenHRApp supports Office mode (standard check-in/out) and Factory mode (shift-based tracking). Admins can configure which modes are available for their organization.',
+        a: 'Pixenox supports Office mode (standard check-in/out) and Factory mode (shift-based tracking). Admins can configure which modes are available for their organization.',
       },
     ],
   },
@@ -69,7 +69,7 @@ export const faqs = [
     items: [
       {
         q: 'Do I need to download the app from an app store?',
-        a: 'No! OpenHRApp is a Progressive Web App (PWA). Just visit the URL in your browser and install it to your home screen — no app store needed.',
+        a: 'No! Pixenox is a Progressive Web App (PWA). Just visit the URL in your browser and install it to your home screen — no app store needed.',
       },
       {
         q: 'Does it work offline?',
@@ -82,19 +82,19 @@ export const faqs = [
     items: [
       {
         q: 'Is there a free trial or time limit?',
-        a: 'There is no trial period because OpenHRApp is permanently free. There are no time limits, no feature gates, and no employee caps. You can use it for as long as you want without paying anything.',
+        a: 'There is no trial period because Pixenox is permanently free. There are no time limits, no feature gates, and no employee caps. You can use it for as long as you want without paying anything.',
       },
       {
         q: 'How can I support the project?',
-        a: 'You can support OpenHRApp by making a donation through Buy Me a Coffee. Any amount helps — your contribution directly funds ongoing development and hosting costs. As a thank-you, donors receive an ad-free experience for their organization. Contact us after donating and we will enable it for your account.',
+        a: 'You can support Pixenox by making a donation through Buy Me a Coffee. Any amount helps — your contribution directly funds ongoing development and hosting costs. As a thank-you, donors receive an ad-free experience for their organization. Contact us after donating and we will enable it for your account.',
       },
       {
         q: 'What features should I look for in HR management software?',
-        a: 'A good HRMS should include attendance tracking, leave management, an employee directory, and reporting tools. OpenHRApp provides all of these plus performance reviews and GPS geofencing — all for free in one open-source platform.',
+        a: 'A good HRMS should include attendance tracking, leave management, an employee directory, and reporting tools. Pixenox provides all of these plus performance reviews and GPS geofencing — all for free in one open-source platform.',
       },
       {
-        q: 'Can small businesses use OpenHRApp for free?',
-        a: 'Absolutely. OpenHRApp has no user limits, no employee caps, and no feature restrictions — small businesses and large enterprises get the same full-featured, free experience. It is ideal for organizations of any size looking for a no-cost HR solution.',
+        q: 'Can small businesses use Pixenox for free?',
+        a: 'Absolutely. Pixenox has no user limits, no employee caps, and no feature restrictions — small businesses and large enterprises get the same full-featured, free experience. It is ideal for organizations of any size looking for a no-cost HR solution.',
       },
     ],
   },
@@ -102,12 +102,12 @@ export const faqs = [
     category: 'Comparisons',
     items: [
       {
-        q: 'How is OpenHRApp different from other HR platforms?',
-        a: 'Unlike proprietary HR software, OpenHRApp is completely open-source — you can inspect the code, self-host it, or customize it. It also works as a PWA, so employees can check in from any device without downloading an app. Plus, the free tier includes features that competitors charge for, like selfie-based attendance and GPS tracking.',
+        q: 'How is Pixenox different from other HR platforms?',
+        a: 'Unlike proprietary HR software, Pixenox is completely open-source — you can inspect the code, self-host it, or customize it. It also works as a PWA, so employees can check in from any device without downloading an app. Plus, the free tier includes features that competitors charge for, like selfie-based attendance and GPS tracking.',
       },
       {
-        q: 'Does OpenHRApp support multi-location attendance tracking?',
-        a: 'Yes. OpenHRApp supports GPS geofencing, allowing you to define office locations and verify that employees are checking in from authorized sites. Organizations with multiple branches can set up and manage location-specific attendance rules.',
+        q: 'Does Pixenox support multi-location attendance tracking?',
+        a: 'Yes. Pixenox supports GPS geofencing, allowing you to define office locations and verify that employees are checking in from authorized sites. Organizations with multiple branches can set up and manage location-specific attendance rules.',
       },
     ],
   },

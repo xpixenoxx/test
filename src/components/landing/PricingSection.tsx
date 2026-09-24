@@ -27,7 +27,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ onRegisterClick }) => {
             Completely Free. No Catch.
           </h2>
           <p className="text-dl-muted text-lg">
-            OpenHRApp is free and open-source software. Every feature is available to every organization — no paywalls, no user limits, no credit card required.
+            Pixenox is free and open-source software. Every feature is available to every organization — no paywalls, no user limits, no credit card required.
           </p>
         </div>
 
@@ -82,10 +82,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({ onRegisterClick }) => {
               Support the Project
             </h3>
             <p className="text-dl-muted text-sm max-w-md mx-auto mb-4">
-              OpenHRApp is independently maintained and funded by the community. If you'd like to support ongoing development, you can make a small donation — any amount helps keep the project alive.
+              Pixenox is independently maintained and funded by the community. If you'd like to support ongoing development, you can make a small donation — any amount helps keep the project alive.
             </p>
             <a
-              href="https://buymeacoffee.com/openhrapp"
+              href="https://buymeacoffee.com/pixenox"
               target="_blank"
               rel="noopener noreferrer"
               /* #FFDD00 is Buy Me a Coffee's own yellow and does not invert, so the

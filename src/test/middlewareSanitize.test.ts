@@ -73,11 +73,11 @@ describe('sanitizeHtml', () => {
   });
 
   it('allows http, https, mailto, tel, and relative URLs', () => {
-    expect(isSafeUrl('https://openhrapp.com')).toBe(true);
+    expect(isSafeUrl('https://pixenox.com')).toBe(true);
     expect(isSafeUrl('http://example.com')).toBe(true);
-    expect(isSafeUrl('mailto:hi@openhrapp.com')).toBe(true);
+    expect(isSafeUrl('mailto:hi@pixenox.com')).toBe(true);
     expect(isSafeUrl('tel:+8801000000')).toBe(true);
-    expect(isSafeUrl('/how-to-use/welcome-to-openhr')).toBe(true);
+    expect(isSafeUrl('/how-to-use/welcome-to-pixenox')).toBe(true);
     expect(isSafeUrl('#section')).toBe(true);
   });
 

@@ -378,7 +378,7 @@ export const superAdminService = {
     }
     // Fall back to localStorage if DB migration hasn't been applied yet.
     try {
-      const stored = localStorage.getItem('openhr-platform:guide_help_links');
+      const stored = localStorage.getItem('pixenox-platform:guide_help_links');
       if (stored) return JSON.parse(stored);
     } catch {}
     return {};
@@ -402,11 +402,11 @@ export const superAdminService = {
       } else {
         await supabase.from('settings').insert({ key: 'guide_help_links', value: links, organization_id: null });
       }
-      try { localStorage.removeItem('openhr-platform:guide_help_links'); } catch {}
+      try { localStorage.removeItem('pixenox-platform:guide_help_links'); } catch {}
     } catch (e: any) {
       if (e?.message?.includes('not-null constraint') || e?.code === '23502') {
         console.warn('[SuperAdmin] Platform DB not ready, using localStorage for guide_help_links');
-        localStorage.setItem('openhr-platform:guide_help_links', JSON.stringify(links));
+        localStorage.setItem('pixenox-platform:guide_help_links', JSON.stringify(links));
         return;
       }
       throw e;

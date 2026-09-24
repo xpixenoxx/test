@@ -65,9 +65,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack }) => {
     if (data) {
       setPost(data);
       updatePageMeta(
-        `${data.title} | OpenHRApp Blog`,
-        data.excerpt || `Read ${data.title} on the OpenHRApp Blog.`,
-        `https://openhrapp.com/blog/${slug}`,
+        `${data.title} | Pixenox Blog`,
+        data.excerpt || `Read ${data.title} on the Pixenox Blog.`,
+        `https://pixenox.com/blog/${slug}`,
         data.coverImage || undefined
       );
       setJsonLd({
@@ -77,32 +77,32 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack }) => {
             '@type': 'Article',
             headline: data.title,
             description: data.excerpt || '',
-            image: data.coverImage || 'https://openhrapp.com/img/screenshot-wide.png',
+            image: data.coverImage || 'https://pixenox.com/img/screenshot-wide.png',
             datePublished: data.publishedAt || data.created,
             dateModified: data.updated || data.publishedAt || data.created,
             author: {
               '@type': 'Person',
-              name: data.authorName || 'OpenHRApp Team',
+              name: data.authorName || 'Pixenox Team',
             },
             publisher: {
               '@type': 'Organization',
-              name: 'OpenHRApp',
+              name: 'Pixenox',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://openhrapp.com/img/logo.webp',
+                url: 'https://pixenox.com/img/logo.webp',
               },
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://openhrapp.com/blog/${slug}`,
+              '@id': `https://pixenox.com/blog/${slug}`,
             },
           },
           {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://openhrapp.com/blog' },
-              { '@type': 'ListItem', position: 3, name: data.title, item: `https://openhrapp.com/blog/${slug}` },
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://pixenox.com/blog' },
+              { '@type': 'ListItem', position: 3, name: data.title, item: `https://pixenox.com/blog/${slug}` },
             ],
           },
         ],

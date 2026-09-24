@@ -145,7 +145,7 @@ const Upgrade: React.FC<UpgradeProps> = ({ onBack }) => {
         </button>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Upgrade Your Plan</h1>
-          <p className="text-slate-500">Choose how you'd like to continue using OpenHRApp</p>
+          <p className="text-slate-500">Choose how you'd like to continue using Pixenox</p>
         </div>
       </div>
 
@@ -184,7 +184,7 @@ const Upgrade: React.FC<UpgradeProps> = ({ onBack }) => {
           <h2 className="text-xl font-bold">Support Open Source HR</h2>
         </div>
         <p className="text-white/90">
-          OpenHRApp is free and open source. Your support helps us maintain and improve the platform for everyone.
+          Pixenox is free and open source. Your support helps us maintain and improve the platform for everyone.
         </p>
       </div>
 
@@ -251,7 +251,7 @@ const Upgrade: React.FC<UpgradeProps> = ({ onBack }) => {
               <p className="text-sm font-medium text-slate-600">Donate via:</p>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://ko-fi.com/openhr"
+                  href="https://ko-fi.com/pixenox"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-5 py-3 bg-[#FF5E5B] text-white rounded-xl font-bold hover:opacity-90 transition-all"
@@ -260,7 +260,7 @@ const Upgrade: React.FC<UpgradeProps> = ({ onBack }) => {
                   <ExternalLink size={14} />
                 </a>
                 <a
-                  href="https://buymeacoffee.com/openhrapp"
+                  href="https://buymeacoffee.com/pixenox"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-5 py-3 bg-[#FFDD00] text-slate-900 rounded-xl font-bold hover:opacity-90 transition-all"
@@ -269,7 +269,7 @@ const Upgrade: React.FC<UpgradeProps> = ({ onBack }) => {
                   <ExternalLink size={14} />
                 </a>
                 <a
-                  href="https://paypal.me/openhr"
+                  href="https://paypal.me/pixenox"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-5 py-3 bg-[#003087] text-white rounded-xl font-bold hover:opacity-90 transition-all"

@@ -41,29 +41,29 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onRegisterClick }) => {
 
   useEffect(() => {
     updatePageMeta(
-      'Blog | OpenHRApp',
-      'Latest news, updates, and insights about HR management, employee engagement, and OpenHRApp product updates.',
-      'https://openhrapp.com/blog'
+      'Blog | Pixenox',
+      'Latest news, updates, and insights about HR management, employee engagement, and Pixenox product updates.',
+      'https://pixenox.com/blog'
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'CollectionPage',
-          name: 'OpenHRApp Blog',
-          description: 'Latest news, updates, and insights about HR management, employee engagement, and OpenHRApp product updates.',
-          url: 'https://openhrapp.com/blog',
+          name: 'Pixenox Blog',
+          description: 'Latest news, updates, and insights about HR management, employee engagement, and Pixenox product updates.',
+          url: 'https://pixenox.com/blog',
           isPartOf: {
             '@type': 'WebSite',
-            name: 'OpenHRApp',
-            url: 'https://openhrapp.com',
+            name: 'Pixenox',
+            url: 'https://pixenox.com',
           },
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://openhrapp.com/blog' },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://pixenox.com/blog' },
           ],
         },
       ],
@@ -91,28 +91,28 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onRegisterClick }) => {
         '@graph': [
           {
             '@type': 'CollectionPage',
-            name: 'OpenHRApp Blog',
-            description: 'Latest news, updates, and insights about HR management, employee engagement, and OpenHRApp product updates.',
-            url: 'https://openhrapp.com/blog',
-            isPartOf: { '@type': 'WebSite', name: 'OpenHRApp', url: 'https://openhrapp.com' },
+            name: 'Pixenox Blog',
+            description: 'Latest news, updates, and insights about HR management, employee engagement, and Pixenox product updates.',
+            url: 'https://pixenox.com/blog',
+            isPartOf: { '@type': 'WebSite', name: 'Pixenox', url: 'https://pixenox.com' },
           },
           {
             '@type': 'ItemList',
-            name: 'OpenHRApp Blog Posts',
-            url: 'https://openhrapp.com/blog',
+            name: 'Pixenox Blog Posts',
+            url: 'https://pixenox.com/blog',
             numberOfItems: data.posts.length,
             itemListElement: data.posts.map((post, i) => ({
               '@type': 'ListItem',
               position: i + 1,
-              url: `https://openhrapp.com/blog/${post.slug}`,
+              url: `https://pixenox.com/blog/${post.slug}`,
               name: post.title,
             })),
           },
           {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://openhrapp.com/blog' },
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://pixenox.com/blog' },
             ],
           },
         ],

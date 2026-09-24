@@ -4,7 +4,7 @@ import { AlertCircle, RefreshCw, Fingerprint } from 'lucide-react';
 import { Attendance } from '../../types';
 
 interface Props {
-  dutyType: 'OFFICE' | 'FACTORY';
+  dutyType: 'WFH' | 'OFFICE';
   dutyLabel?: string;
   remarks: string;
   setRemarks: (val: string) => void;
@@ -17,19 +17,19 @@ interface Props {
 export const AttendanceActions: React.FC<Props> = ({
   dutyType, dutyLabel, remarks, setRemarks, onSubmit, status, isDisabled, activeRecord
 }) => {
-  const displayLabel = dutyLabel || (dutyType === 'FACTORY' ? 'Factory' : 'Office');
+  const displayLabel = dutyLabel || (dutyType === 'OFFICE' ? 'Office' : 'WFH');
 
   return (
     <div className="px-8 pt-4 pb-12 flex flex-col items-center gap-4">
       <div className="w-full max-w-[320px] space-y-2">
         <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest px-2 flex items-center gap-1.5">
-          {dutyType === 'FACTORY' && <AlertCircle size={10} className="text-emerald-500" />}
-          {displayLabel} {dutyType === 'FACTORY' && "(Mandatory)"}
+          {dutyType === 'OFFICE' && <AlertCircle size={10} className="text-emerald-500" />}
+          {displayLabel} {dutyType === 'OFFICE' && "(Mandatory Remarks)"}
         </p>
         <input
           type="text"
-          placeholder={dutyType === 'FACTORY' ? `${displayLabel} Name & Details...` : "Optional remarks..."}
-          className={`w-full px-6 py-3.5 bg-white border rounded-2xl text-slate-700 text-xs font-bold placeholder:text-slate-300 outline-none shadow-sm transition-all ${dutyType === 'FACTORY' && !remarks ? 'border-emerald-200 bg-emerald-50/10' : 'border-slate-100'}`}
+          placeholder={dutyType === 'OFFICE' ? `Location / Client Site name...` : "Optional remarks..."}
+          className={`w-full px-6 py-3.5 bg-white border rounded-2xl text-slate-700 text-xs font-bold placeholder:text-slate-300 outline-none shadow-sm transition-all ${dutyType === 'OFFICE' && !remarks ? 'border-emerald-200 bg-emerald-50/10' : 'border-slate-100'}`}
           value={remarks}
           onChange={e => setRemarks(e.target.value)}
         />

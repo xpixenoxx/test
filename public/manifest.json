@@ -1,14 +1,13 @@
-
 {
-  "id": "openhrapp",
-  "name": "OpenHRApp",
-  "short_name": "OpenHRApp",
-  "description": "Smart Open-Source HR Management System",
+  "id": "pixenox-hrm",
+  "name": "Pixenox HRM",
+  "short_name": "Pixenox",
+  "description": "Pixenox — Internal HR & Operations Management Platform",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#fcfdfe",
-  "theme_color": "#fcfdfe",
+  "background_color": "#0f0f23",
+  "theme_color": "#6c5ce7",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

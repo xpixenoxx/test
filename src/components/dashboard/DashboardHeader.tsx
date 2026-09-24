@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Building, Building2, ArrowRight } from 'lucide-react';
+import { Home, Building2, ArrowRight, MapPin } from 'lucide-react';
 import { Employee, Attendance, AppConfig } from '../../types';
 
 interface Props {
@@ -40,26 +40,30 @@ export const DashboardHeader: React.FC<Props> = ({ user, activeShift, appConfig,
               <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-white animate-ping opacity-75"></div>
             </div>
             <div className="text-left">
-              <p className="text-[9px] font-semibold text-rose-100 uppercase tracking-widest leading-none mb-1">{activeShift.dutyType === 'FACTORY' ? (appConfig?.dutyLabel2 || 'Factory') : (appConfig?.dutyLabel1 || 'Office')} Session Active</p>
+              <p className="text-[9px] font-semibold text-rose-100 uppercase tracking-widest leading-none mb-1">
+                {activeShift.dutyType === 'OFFICE' ? (appConfig?.dutyLabel2 || 'Office') : (appConfig?.dutyLabel1 || 'WFH')} Session Active
+              </p>
               <p className="text-xs font-semibold text-white uppercase">Check Out</p>
             </div>
             <ArrowRight size={16} className="text-rose-200 group-hover:text-white transition-colors ml-2" />
           </button>
         ) : (
           <div className="grid grid-cols-2 gap-2 w-full sm:w-auto animate-in slide-in-from-right-4">
+            {/* WFH — Primary action (left, full color) */}
             <button 
               onClick={() => onNavigate('attendance-quick-office')}
               className="flex items-center justify-center gap-2 px-4 py-3 md:px-5 md:py-4 bg-primary text-white rounded-2xl md:rounded-[1.5rem] shadow-lg shadow-primary-light hover:bg-primary-hover active:scale-95 transition-all"
             >
-              <Building size={16} />
-              <span className="text-[10px] font-semibold uppercase tracking-widest">{appConfig?.dutyLabel1 || 'Office'}</span>
+              <Home size={16} />
+              <span className="text-[10px] font-semibold uppercase tracking-widest">{appConfig?.dutyLabel1 || 'WFH'}</span>
             </button>
+            {/* Office/Field — Secondary action (right, slightly dimmed) */}
             <button
               onClick={() => onNavigate('attendance-quick-factory')}
-              className="flex items-center justify-center gap-2 px-4 py-3 md:px-5 md:py-4 bg-primary text-white rounded-2xl md:rounded-[1.5rem] shadow-lg shadow-primary-light hover:bg-primary-hover active:scale-95 transition-all opacity-80"
+              className="flex items-center justify-center gap-2 px-4 py-3 md:px-5 md:py-4 bg-slate-700 text-white rounded-2xl md:rounded-[1.5rem] shadow-lg shadow-slate-200 hover:bg-slate-800 active:scale-95 transition-all"
             >
-              <Building2 size={16} />
-              <span className="text-[10px] font-semibold uppercase tracking-widest">{appConfig?.dutyLabel2 || 'Factory'}</span>
+              <MapPin size={16} />
+              <span className="text-[10px] font-semibold uppercase tracking-widest">{appConfig?.dutyLabel2 || 'Office'}</span>
             </button>
           </div>
         )}

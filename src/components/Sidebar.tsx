@@ -16,6 +16,12 @@ import {
   ClipboardCheck,
   Megaphone,
   Bell,
+  Briefcase,
+  Wallet,
+  Receipt,
+  Laptop,
+  Folder,
+  FileSignature,
 } from 'lucide-react';
 import HelpButton from './onboarding/HelpButton';
 
@@ -42,6 +48,12 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, onLogout, ro
     { id: 'attendance-logs', label: 'My Attendance', icon: History, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
     { id: 'attendance-audit', label: 'Attendance Audit', icon: List, roles: ['ADMIN', 'HR', 'MANAGER'] },
     { id: 'leave', label: 'Leave', icon: CalendarDays, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { id: 'projects', label: 'Projects & Tasks', icon: Briefcase, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { id: 'payroll', label: 'Payroll', icon: Wallet, roles: ['ADMIN', 'HR'] },
+    { id: 'expenses', label: 'Expenses', icon: Receipt, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { id: 'assets', label: 'Assets', icon: Laptop, roles: ['ADMIN', 'HR'] },
+    { id: 'documents', label: 'Documents', icon: Folder, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { id: 'invoices', label: 'Invoices', icon: FileSignature, roles: ['ADMIN', 'HR'] },
     { id: 'announcements', label: 'Announcements', icon: Megaphone, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
     { id: 'admin-notifications', label: 'Notifications', icon: Bell, roles: ['ADMIN', 'HR'] },
     { id: 'employees', label: 'Team Directory', icon: Users, roles: ['ADMIN', 'HR', 'MANAGER'] },
@@ -116,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, onLogout, ro
           </button>
 
           <div className="text-center">
-            <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-[0.3em]">OpenHRApp v2.9.0</p>
+            <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-[0.3em]">Pixenox HRM v1.0</p>
           </div>
         </div>
       </nav>

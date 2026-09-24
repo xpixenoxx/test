@@ -89,7 +89,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onLoginClick, onRegisterClick
 
           {/* Subtext */}
           <p className="text-dl-lg sm:text-dl-xl text-dl-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            OpenHRApp is a free, open-source HR management platform trusted by growing teams worldwide. Track attendance with selfie-based check-ins, manage leave requests with one click, and keep employee records organized — all from one intuitive dashboard. No downloads, no credit card — get started in minutes.
+            Pixenox is a free, open-source HR management platform trusted by growing teams worldwide. Track attendance with selfie-based check-ins, manage leave requests with one click, and keep employee records organized — all from one intuitive dashboard. No downloads, no credit card — get started in minutes.
           </p>
 
           {/* Desktop: CTA Buttons */}
@@ -130,7 +130,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onLoginClick, onRegisterClick
             <p className="mt-5 text-dl-sm text-dl-muted max-w-xl mx-auto leading-relaxed">
               That arc is a working day: a check-in at dawn, a check-out at dusk, and the hours
               in between that payroll and compliance both depend on. Recording it accurately is
-              the whole job — everything else OpenHRApp does is built on getting those two
+              the whole job — everything else Pixenox does is built on getting those two
               timestamps right.
             </p>
           </div>
@@ -153,13 +153,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onLoginClick, onRegisterClick
 
           {/* Video Intro */}
           <div className="relative max-w-4xl mx-auto mb-16">
-            <h2 className="font-dl-display text-dl-xl sm:text-dl-2xl font-semibold text-dl-ink tracking-dl-head mb-6">See OpenHRApp in Action</h2>
+            <h2 className="font-dl-display text-dl-xl sm:text-dl-2xl font-semibold text-dl-ink tracking-dl-head mb-6">See Pixenox in Action</h2>
             <div className="rounded-dl-lg overflow-hidden shadow-dl-2 border border-dl-hair">
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/Wb-4mt90IFU"
-                  title="OpenHRApp Introduction"
+                  title="Pixenox Introduction"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 ></iframe>
@@ -184,7 +184,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onLoginClick, onRegisterClick
 
             {isIOS ? (
               <div className="space-y-3">
-                <p className="text-dl-xs text-dl-muted font-medium">Install OpenHRApp on your iPhone or iPad:</p>
+                <p className="text-dl-xs text-dl-muted font-medium">Install Pixenox on your iPhone or iPad:</p>
                 <div className="flex items-center gap-3 p-3 bg-dl-surface-2 rounded-dl-md">
                   <div className="w-8 h-8 rounded-dl-sm bg-dl-surface shadow-dl-1 flex items-center justify-center text-dl-teal"><Share size={16} /></div>
                   <p className="text-dl-xs font-semibold text-dl-ink">1. Tap the <span className="text-dl-teal">Share</span> button in Safari</p>
@@ -200,7 +200,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onLoginClick, onRegisterClick
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-dl-xs text-dl-muted font-medium">Install OpenHRApp from your browser:</p>
+                <p className="text-dl-xs text-dl-muted font-medium">Install Pixenox from your browser:</p>
                 <div className="flex items-center gap-3 p-3 bg-dl-surface-2 rounded-dl-md">
                   <div className="w-8 h-8 rounded-dl-sm bg-dl-surface shadow-dl-1 flex items-center justify-center text-dl-muted"><MoreVertical size={16} /></div>
                   <p className="text-dl-xs font-semibold text-dl-ink">1. Tap the <span className="text-dl-ink">Menu</span> button (&#8942; or &#8943;)</p>

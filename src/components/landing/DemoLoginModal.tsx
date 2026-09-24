@@ -40,7 +40,7 @@ const BrandLogo = () => (
         <img
           src="/img/logo.webp"
           className="w-full h-full object-contain"
-          alt="OpenHRApp Logo"
+          alt="Pixenox Logo"
         />
       </div>
     </div>
@@ -222,7 +222,7 @@ const DemoLoginModal: React.FC<DemoLoginModalProps> = ({ isOpen, onClose, onOpen
         <div className="px-5 mb-4 text-center">
           <h3 className="text-sm font-bold text-slate-800">Choose a Demo Account</h3>
           <p className="text-xs text-slate-400 mt-1">
-            Explore OpenHRApp from different role perspectives
+            Explore Pixenox from different role perspectives
           </p>
         </div>
 

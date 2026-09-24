@@ -92,7 +92,7 @@ const STEPS_CONFIG = [
   {
     id: 8,
     title: 'Add Employees',
-    description: 'Invite your team members to start using OpenHRApp',
+    description: 'Invite your team members to start using Pixenox',
     navigateTo: 'employees',
     tutorialSlug: 'managing-employees',
     check: (d: SetupCheckData) => d.employeeCount > 1,

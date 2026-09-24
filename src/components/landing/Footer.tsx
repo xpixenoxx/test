@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
       title: 'Resources',
       links: [
         { label: 'Guides', href: '/how-to-use', onClick: (e: React.MouseEvent) => { e.preventDefault(); navigateTo('/how-to-use'); } },
-        { label: 'GitHub', href: 'https://github.com/mimnets/openhrapp', onClick: () => {} },
+        { label: 'GitHub', href: 'https://github.com/mimnets/pixenox', onClick: () => {} },
       ],
     },
     {
@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
           <div className={dlFooter.brandCol}>
             <div className="flex items-center gap-2 mb-4">
               <div className={dlBrand.frameSmall}>
-                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="OpenHRApp" width="44" height="44" />
+                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="Pixenox" width="44" height="44" />
               </div>
               <span className={dlBrand.word}>
                 <span className={dlBrand.wordOnSlab}>Open</span>
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className={dlFooter.bottomBar}>
           <p className={dlFooter.fine}>
-            &copy; {new Date().getFullYear()} OpenHRApp. All rights reserved.
+            &copy; {new Date().getFullYear()} Pixenox. All rights reserved.
           </p>
 
           {/* Social Links */}

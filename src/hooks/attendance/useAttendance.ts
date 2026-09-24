@@ -72,7 +72,7 @@ export const useAttendance = (user: any, onFinish?: () => void) => {
   }, [refreshData]);
 
   const submitPunch = async (
-    dutyType: 'OFFICE' | 'FACTORY',
+    dutyType: 'WFH' | 'OFFICE',
     remarks: string,
     location: { lat: number; lng: number; address: string },
     selfieData: string
@@ -94,6 +94,8 @@ export const useAttendance = (user: any, onFinish?: () => void) => {
         const shiftStart = employeeShift?.startTime || appConfig?.officeStartTime;
         const shiftGrace = employeeShift?.lateGracePeriod ?? appConfig?.lateGracePeriod ?? 0;
 
+        // Late Calculation — only for OFFICE (physical) attendance
+        // WFH is flexible; late marking would be misleading
         if (dutyType === 'OFFICE' && shiftStart) {
           const [pH, pM] = punchTime.split(':').map(Number);
           const [sH, sM] = shiftStart.split(':').map(Number);
@@ -115,7 +117,7 @@ export const useAttendance = (user: any, onFinish?: () => void) => {
           status: punchStatus, 
           location, 
           selfie: selfieData, 
-          remarks: dutyType === 'FACTORY' ? `[FACTORY] ${remarks}` : remarks,
+          remarks: dutyType === 'OFFICE' ? `[OFFICE] ${remarks}` : remarks,
           dutyType: dutyType
         });
       }

@@ -6,7 +6,7 @@ import React, { createContext, useContext, useState, useEffect, useLayoutEffect 
  * This used to also carry a selectable accent theme: fourteen palettes, a
  * super-admin picker, and a `default_theme` row read from Supabase on an idle
  * callback, again every 60 seconds, and again on every visibilitychange. That
- * is gone — OpenHRApp has one brand colour, defined once in src/index.css.
+ * is gone — Pixenox has one brand colour, defined once in src/index.css.
  *
  * Removing it also removed three defects:
  *
@@ -24,7 +24,7 @@ import React, { createContext, useContext, useState, useEffect, useLayoutEffect 
 
 export type DarkModePreference = 'light' | 'dark' | 'system';
 
-const DARK_MODE_KEY = 'openhr-dark-mode';
+const DARK_MODE_KEY = 'pixenox-dark-mode';
 
 /** The <meta name="theme-color"> value per mode, matching the painted surface. */
 const META_THEME_COLOR = { dark: '#0f172a', light: '#fcfdfe' } as const;
@@ -62,31 +62,23 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [darkModePreference, setDarkModePrefState] = useState<DarkModePreference>(getStoredDarkPreference);
-  const [systemDark, setSystemDark] = useState(getSystemPrefersDark);
+  const [darkModePreference, setDarkModePrefState] = useState<DarkModePreference>('light');
+  
+  // App is hardcoded to Light mode (Purple and White) based on user request.
+  const darkMode = false;
+  const systemDark = false;
 
-  const darkMode = darkModePreference === 'system' ? systemDark : darkModePreference === 'dark';
-
-  // Track the OS setting so 'system' stays live rather than being sampled once.
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => setSystemDark(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+  useLayoutEffect(() => {
+    // Explicitly remove dark class if it somehow got there
+    document.documentElement.classList.remove('dark');
+    
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', META_THEME_COLOR.light);
   }, []);
 
-  // useLayoutEffect, not useEffect: this runs before the browser paints, so the
-  // class index.html's boot script already set is never briefly removed.
-  useLayoutEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', darkMode ? META_THEME_COLOR.dark : META_THEME_COLOR.light);
-  }, [darkMode]);
-
   const setDarkModePreference = (pref: DarkModePreference) => {
-    setDarkModePrefState(pref);
-    try { localStorage.setItem(DARK_MODE_KEY, pref); } catch { /* noop */ }
+    // No-op for now to lock light mode
+    setDarkModePrefState('light');
   };
 
   return (

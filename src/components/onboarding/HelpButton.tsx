@@ -6,11 +6,11 @@ import { hrService } from '../../services/hrService';
 // Default mapping: helpPointId → tutorial slug
 const DEFAULT_GUIDE_LINKS: Record<string, string> = {
   // Dashboard
-  'dashboard.admin': 'welcome-to-openhr',
-  'dashboard.manager': 'welcome-to-openhr',
-  'dashboard.employee': 'welcome-to-openhr',
+  'dashboard.admin': 'welcome-to-pixenox',
+  'dashboard.manager': 'welcome-to-pixenox',
+  'dashboard.employee': 'welcome-to-pixenox',
   // Sidebar menu items
-  'sidebar.dashboard': 'welcome-to-openhr',
+  'sidebar.dashboard': 'welcome-to-pixenox',
   'sidebar.profile': 'managing-profile-settings',
   'sidebar.attendance-logs': 'understanding-attendance-logs',
   'sidebar.attendance-audit': 'attendance-admin-audit',

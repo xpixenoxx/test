@@ -50,7 +50,7 @@ const TutorialsFooter: React.FC = () => {
       title: 'Resources',
       links: [
         { label: 'Guides', action: goToTutorials },
-        { label: 'GitHub', action: () => window.open('https://github.com/mimnets/openhrapp', '_blank') },
+        { label: 'GitHub', action: () => window.open('https://github.com/mimnets/pixenox', '_blank') },
       ],
     },
     {
@@ -72,7 +72,7 @@ const TutorialsFooter: React.FC = () => {
           <div className={dlFooter.brandCol}>
             <div className="flex items-center gap-2 mb-4 cursor-pointer" onClick={goHome}>
               <div className={dlBrand.frameSmall}>
-                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="OpenHRApp" />
+                <img src="/img/logo.webp" className="w-full h-full object-contain" alt="Pixenox" />
               </div>
               <span className={dlBrand.word}>
                 <span className={dlBrand.wordOnSlab}>Open</span>
@@ -108,7 +108,7 @@ const TutorialsFooter: React.FC = () => {
         {/* Bottom Bar */}
         <div className={dlFooter.bottomBar}>
           <p className={dlFooter.fine}>
-            &copy; {new Date().getFullYear()} OpenHRApp. All rights reserved.
+            &copy; {new Date().getFullYear()} Pixenox. All rights reserved.
           </p>
 
           {/* Social Links */}

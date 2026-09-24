@@ -15,13 +15,13 @@ describe('CookieConsent', () => {
   });
 
   it('does not render when consent was previously accepted', () => {
-    localStorage.setItem('openhr-cookie-consent', 'accepted');
+    localStorage.setItem('pixenox-cookie-consent', 'accepted');
     const { container } = render(<CookieConsent />);
     expect(container.firstChild).toBeNull();
   });
 
   it('does not render when consent was previously declined', () => {
-    localStorage.setItem('openhr-cookie-consent', 'declined');
+    localStorage.setItem('pixenox-cookie-consent', 'declined');
     const { container } = render(<CookieConsent />);
     expect(container.firstChild).toBeNull();
   });

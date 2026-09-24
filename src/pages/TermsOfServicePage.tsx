@@ -13,30 +13,30 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     updatePageMeta(
-      'Terms of Service — OpenHRApp',
-      'Read the Terms of Service for OpenHRApp. Understand your rights, responsibilities, and the rules governing use of our open-source HR management platform.',
-      'https://openhrapp.com/terms'
+      'Terms of Service — Pixenox',
+      'Read the Terms of Service for Pixenox. Understand your rights, responsibilities, and the rules governing use of our open-source HR management platform.',
+      'https://pixenox.com/terms'
     );
     setJsonLd({
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'WebPage',
-          name: 'Terms of Service — OpenHRApp',
-          description: 'Read the Terms of Service for OpenHRApp. Understand your rights, responsibilities, and the rules governing use of our open-source HR management platform.',
-          url: 'https://openhrapp.com/terms',
+          name: 'Terms of Service — Pixenox',
+          description: 'Read the Terms of Service for Pixenox. Understand your rights, responsibilities, and the rules governing use of our open-source HR management platform.',
+          url: 'https://pixenox.com/terms',
           lastReviewed: '2026-04-21',
           isPartOf: {
             '@type': 'WebSite',
-            name: 'OpenHRApp',
-            url: 'https://openhrapp.com',
+            name: 'Pixenox',
+            url: 'https://pixenox.com',
           },
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openhrapp.com/' },
-            { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: 'https://openhrapp.com/terms' },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://pixenox.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: 'https://pixenox.com/terms' },
           ],
         },
       ],
@@ -72,7 +72,7 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
             <section>
               <h2 className="text-xl font-bold text-dl-ink mb-3">1. Acceptance of Terms</h2>
               <p className="text-dl-muted leading-relaxed">
-                By accessing or using OpenHRApp ("the Service") at <strong>openhrapp.com</strong>, you agree to be bound by these
+                By accessing or using Pixenox ("the Service") at <strong>pixenox.com</strong>, you agree to be bound by these
                 Terms of Service ("Terms"). If you do not agree to these Terms, you may not access or use the Service.
                 These Terms apply to all visitors, users, and others who access or use the Service.
               </p>
@@ -81,7 +81,7 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
             <section>
               <h2 className="text-xl font-bold text-dl-ink mb-3">2. Description of Service</h2>
               <p className="text-dl-muted leading-relaxed">
-                OpenHRApp is an open-source HR management platform that provides tools for attendance tracking, leave management,
+                Pixenox is an open-source HR management platform that provides tools for attendance tracking, leave management,
                 employee directory management, reporting, and other human resource functions. The Service is provided "as is" and
                 "as available" for organizations and their authorized users.
               </p>
@@ -135,8 +135,8 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
             <section>
               <h2 className="text-xl font-bold text-dl-ink mb-3">7. Open Source License</h2>
               <p className="text-dl-muted leading-relaxed">
-                OpenHRApp is an open-source project. The source code is available under its respective open-source license on GitHub.
-                These Terms of Service govern your use of the hosted Service at openhrapp.com. If you choose to self-host the application,
+                Pixenox is an open-source project. The source code is available under its respective open-source license on GitHub.
+                These Terms of Service govern your use of the hosted Service at pixenox.com. If you choose to self-host the application,
                 the open-source license terms apply to the software, while these Terms do not apply to self-hosted instances.
               </p>
             </section>
@@ -153,7 +153,7 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
             <section>
               <h2 className="text-xl font-bold text-dl-ink mb-3">9. Limitation of Liability</h2>
               <p className="text-dl-muted leading-relaxed">
-                To the maximum extent permitted by applicable law, OpenHRApp and its contributors shall not be liable for any indirect, incidental,
+                To the maximum extent permitted by applicable law, Pixenox and its contributors shall not be liable for any indirect, incidental,
                 special, consequential, or punitive damages, including but not limited to loss of profits, data, use, or goodwill, arising out of
                 or in connection with your use of the Service. Our total liability for any claims arising under these Terms shall not exceed the
                 amount you have paid us in the twelve (12) months preceding the claim.
@@ -203,9 +203,9 @@ const TermsOfServicePage: React.FC<TermsOfServicePageProps> = ({ onBack }) => {
                 If you have any questions about these Terms of Service, please contact us at:
               </p>
               <div className="mt-3 p-4 bg-dl-ground rounded-dl-md text-dl-muted">
-                <p><strong>OpenHRApp</strong></p>
-                <p>Email: support@openhrapp.com</p>
-                <p>Website: <a href="https://openhrapp.com" className="text-dl-teal hover:underline">openhrapp.com</a></p>
+                <p><strong>Pixenox</strong></p>
+                <p>Email: support@pixenox.com</p>
+                <p>Website: <a href="https://pixenox.com" className="text-dl-teal hover:underline">pixenox.com</a></p>
               </div>
             </section>
 

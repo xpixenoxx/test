@@ -37,17 +37,16 @@ const BrandLogo = () => (
         <img
           src="/img/logo.webp"
           className="w-full h-full object-contain"
-          alt="OpenHRApp Logo"
+          alt="Pixenox Logo"
         />
       </div>
     </div>
     <div className="text-center">
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tighter flex items-center justify-center">
-        <span className="text-primary">Open</span>
-        <span className="text-[#f59e0b]">HR</span>
-        <span className="text-[#10b981]">App</span>
+        <span className="text-primary">Pixe</span>
+        <span className="text-[#6c5ce7]">nox</span>
       </h1>
-      <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mt-1">Personnel Gateway</p>
+      <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mt-1">HR Management Platform</p>
     </div>
   </div>
 );
@@ -499,7 +498,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onRegisterClick, onBackTo
                   </div>
                   {showResend && (
                     <p className="text-[11px] font-medium normal-case tracking-normal text-rose-500/90 leading-snug">
-                      Already requested a link? <span className="font-bold">Check your spam or junk folder</span> before resending — verification emails from <span className="font-mono">noreply@openhrapp.com</span> sometimes land there.
+                      Already requested a link? <span className="font-bold">Check your spam or junk folder</span> before resending — verification emails from <span className="font-mono">noreply@pixenox.com</span> sometimes land there.
                     </p>
                   )}
                 </div>
@@ -649,7 +648,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onRegisterClick, onBackTo
                       </div>
                       <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl">
                          <div className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary"><Download size={18} /></div>
-                         <div className="text-xs font-bold text-slate-700">2. Select <span className="text-slate-900">Install App</span> or <span className="text-slate-900">Install OpenHRApp</span></div>
+                         <div className="text-xs font-bold text-slate-700">2. Select <span className="text-slate-900">Install App</span> or <span className="text-slate-900">Install Pixenox</span></div>
                       </div>
                    </div>
                 </div>

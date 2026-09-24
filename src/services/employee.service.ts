@@ -76,39 +76,51 @@ export const employeeService = {
   },
 
   async addEmployee(emp: Partial<Employee>) {
-    if (!isSupabaseConfigured() || !SUPABASE_FUNCTIONS_URL) return;
+    if (!isSupabaseConfigured()) throw new Error('System offline');
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error('Not authenticated');
+    const password = (emp as any).password;
+    if (!password) throw new Error('Password is required');
+    if (!emp.email) throw new Error('Email is required');
+    if (!emp.name) throw new Error('Name is required');
 
-    const formData = new FormData();
-    if (emp.email)       formData.append('email', emp.email);
-    if ((emp as any).password) formData.append('password', (emp as any).password);
-    if (emp.name)        formData.append('name', emp.name);
-    if (emp.role)        formData.append('role', emp.role.toUpperCase());
-    if (emp.department)  formData.append('department', emp.department);
-    if (emp.designation) formData.append('designation', emp.designation);
-    if (emp.employeeId)  formData.append('employeeId', emp.employeeId);
-    if (emp.lineManagerId) formData.append('lineManagerId', emp.lineManagerId);
-    if (emp.teamId)      formData.append('teamId', emp.teamId);
-    if (emp.shiftId)     formData.append('shiftId', emp.shiftId);
-    if (emp.mobile)      formData.append('mobile', emp.mobile);
-    if (emp.joiningDate) formData.append('joiningDate', emp.joiningDate);
-
-    // Avatar: data URL → Blob
-    if (emp.avatar && typeof emp.avatar === 'string' && emp.avatar.startsWith('data:')) {
-      const blob = await (await fetch(emp.avatar)).blob();
-      formData.append('avatar', blob, 'avatar.webp');
-    }
-
-    const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/create-employee`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${session.access_token}` },
-      body: formData,
+    // Call the SECURITY DEFINER RPC — runs as DB superuser so it can create
+    // auth.users directly without affecting the current admin session.
+    const { data, error } = await supabase.rpc('admin_create_employee', {
+      p_email: emp.email,
+      p_password: password,
+      p_name: emp.name,
+      p_role: (emp.role || 'EMPLOYEE').toUpperCase(),
+      p_department: emp.department || 'Unassigned',
+      p_designation: emp.designation || 'Staff',
+      p_employee_id: emp.employeeId || null,
+      p_mobile: emp.mobile || null,
+      p_joining_date: emp.joiningDate || new Date().toISOString().split('T')[0],
+      p_line_manager_id: emp.lineManagerId || null,
+      p_team_id: emp.teamId || null,
+      p_shift_id: emp.shiftId || null,
+      p_employment_type: emp.employmentType || 'PERMANENT',
+      p_work_type: emp.workType || 'OFFICE',
     });
 
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message || 'Failed to create employee');
+    if (error) throw new Error(error.message);
+    if (data && !data.success) throw new Error(data.error || 'Failed to create employee');
+
+    const userId = data?.userId;
+
+    // Upload avatar if provided (separate step, non-blocking)
+    if (userId && emp.avatar && typeof emp.avatar === 'string' && emp.avatar.startsWith('data:')) {
+      try {
+        const blob = await (await fetch(emp.avatar)).blob();
+        const path = `${userId}/avatar.webp`;
+        await supabase.storage
+          .from('avatars')
+          .upload(path, blob, { upsert: true, contentType: 'image/webp' });
+        // Update profile with avatar path
+        await supabase.from('profiles').update({ avatar: path }).eq('id', userId);
+      } catch (e) {
+        console.warn('[EmployeeService] Avatar upload failed (non-fatal):', e);
+      }
+    }
 
     employeeService.clearCache();
     apiClient.notify();
@@ -188,69 +200,44 @@ export const employeeService = {
   },
 
   async deleteEmployee(id: string) {
-    if (!isSupabaseConfigured() || !SUPABASE_FUNCTIONS_URL) return;
+    if (!isSupabaseConfigured()) return;
 
-    // Use the Edge Function so the auth.users record is also deleted.
-    // The client-side profiles.delete() only removes the profiles row;
-    // the FK cascade only works auth→profiles, not profiles→auth.
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error('Not authenticated');
+    // Soft-delete: mark as INACTIVE and clear sensitive data
+    // (Hard-delete of auth.users requires service role key, not available on client)
+    const { error } = await supabase
+      .from('profiles')
+      .update({ status: 'INACTIVE', verified: false })
+      .eq('id', id);
 
-    const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/delete-employee`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: id }),
-    });
-
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.message || 'Failed to delete employee');
+    if (error) throw new Error(error.message || 'Failed to delete employee');
 
     employeeService.clearCache();
     apiClient.notify();
   },
 
   async offboardEmployee(id: string) {
-    if (!isSupabaseConfigured() || !SUPABASE_FUNCTIONS_URL) return;
+    if (!isSupabaseConfigured()) return;
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error('Not authenticated');
+    const { error } = await supabase
+      .from('profiles')
+      .update({ status: 'INACTIVE' })
+      .eq('id', id);
 
-    const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/admin-offboard-employee`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: id, action: 'offboard' }),
-    });
-
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.message || 'Failed to offboard employee');
+    if (error) throw new Error(error.message || 'Failed to offboard employee');
 
     employeeService.clearCache();
     apiClient.notify();
   },
 
   async reactivateEmployee(id: string) {
-    if (!isSupabaseConfigured() || !SUPABASE_FUNCTIONS_URL) return;
+    if (!isSupabaseConfigured()) return;
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error('Not authenticated');
+    const { error } = await supabase
+      .from('profiles')
+      .update({ status: 'ACTIVE', verified: true })
+      .eq('id', id);
 
-    const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/admin-offboard-employee`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: id, action: 'reactivate' }),
-    });
-
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.message || 'Failed to reactivate employee');
+    if (error) throw new Error(error.message || 'Failed to reactivate employee');
 
     employeeService.clearCache();
     apiClient.notify();

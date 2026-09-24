@@ -30,10 +30,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLoginClick, onRegisterClick
     document.documentElement.style.scrollBehavior = 'smooth';
 
     updatePageMeta(
-      'OpenHRApp — Free Open-Source HR Management Software',
-      'OpenHRApp is a free, open-source HR platform with attendance tracking, leave management, and employee directory. Get started today — no credit card required, completely free forever.',
-      'https://openhrapp.com/',
-      'https://openhrapp.com/img/screenshot-wide.png'
+      'Pixenox — Free Open-Source HR Management Software',
+      'Pixenox is a free, open-source HR platform with attendance tracking, leave management, and employee directory. Get started today — no credit card required, completely free forever.',
+      'https://pixenox.com/',
+      'https://pixenox.com/img/screenshot-wide.png'
     );
 
     setJsonLd({
@@ -41,7 +41,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLoginClick, onRegisterClick
       '@graph': [
         {
           '@type': 'SoftwareApplication',
-          name: 'OpenHRApp',
+          name: 'Pixenox',
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web, Android, iOS',
           offers: {
@@ -50,26 +50,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLoginClick, onRegisterClick
             priceCurrency: 'USD',
           },
           description: 'Free, open-source HR management system with attendance tracking, leave management, employee directory, and compliance tools.',
-          url: 'https://openhrapp.com',
-          image: 'https://openhrapp.com/img/screenshot-wide.png',
+          url: 'https://pixenox.com',
+          image: 'https://pixenox.com/img/screenshot-wide.png',
         },
         {
           '@type': 'FAQPage',
           mainEntity: [
             {
               '@type': 'Question',
-              name: 'What is OpenHRApp?',
+              name: 'What is Pixenox?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'OpenHRApp is a modern, open-source HR management platform that helps organizations manage attendance, leave, and employee records in one place. It works as a Progressive Web App (PWA) on any device.',
+                text: 'Pixenox is a modern, open-source HR management platform that helps organizations manage attendance, leave, and employee records in one place. It works as a Progressive Web App (PWA) on any device.',
               },
             },
             {
               '@type': 'Question',
-              name: 'Is OpenHRApp really free?',
+              name: 'Is Pixenox really free?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Yes — completely free. OpenHRApp is open-source software with no paywalls, no user limits, and no credit card required. The app is ad-supported. If you\'d like to support the project, you can make a small donation through Buy Me a Coffee.',
+                text: 'Yes — completely free. Pixenox is open-source software with no paywalls, no user limits, and no credit card required. The app is ad-supported. If you\'d like to support the project, you can make a small donation through Buy Me a Coffee.',
               },
             },
             {

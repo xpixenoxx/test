@@ -124,7 +124,7 @@ export interface CheckInSyncQueue {
 }
 
 export const QUEUE_DEFAULTS = {
-  storageKey: 'openhr_checkin_sync_queue',
+  storageKey: 'pixenox_checkin_sync_queue',
   maxAttempts: 5,
   /** Same backoff shape as `withRetry` in api.client.ts, extended for
    *  long outages. */

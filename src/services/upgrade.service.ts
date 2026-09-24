@@ -110,7 +110,7 @@ async function sendEmailToSuperAdmins(
       <h2>New ${typeLabel} Request</h2>
       <p><strong>${orgName}</strong> has submitted a ${typeLabel.toLowerCase()} request.</p>
       <p style="margin-top:16px">
-        <a href="https://app.openhr.app" style="color:#4f46e5">Open Super Admin Dashboard</a>
+        <a href="https://app.pixenox.app" style="color:#4f46e5">Open Super Admin Dashboard</a>
       </p>
     `;
     await supabase.functions.invoke('notify-admins-email', {

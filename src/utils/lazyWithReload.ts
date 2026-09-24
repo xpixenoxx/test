@@ -1,6 +1,6 @@
 import { lazy, ComponentType } from 'react';
 
-const RELOAD_KEY = 'openhr_chunk_reload_at';
+const RELOAD_KEY = 'pixenox_chunk_reload_at';
 const RELOAD_COOLDOWN_MS = 30_000;
 
 const isChunkLoadError = (err: unknown): boolean => {

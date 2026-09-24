@@ -104,43 +104,100 @@ export const authService = {
   }): Promise<{ success: boolean; error?: string }> {
     if (!isSupabaseConfigured()) return { success: false, error: 'System offline' };
 
-    try {
-      const formData = new FormData();
-      formData.append('orgName', data.orgName);
-      formData.append('adminName', data.adminName);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      formData.append('country', data.country);
-      if (data.address) formData.append('address', data.address);
-      if (data.logo) formData.append('logo', data.logo);
-      if (data.turnstileToken) formData.append('turnstileToken', data.turnstileToken);
+    const password = data.password;
 
-      // Calls the Supabase Edge Function (Phase 4 will create this)
-      const { data: result, error } = await supabase.functions.invoke('register', {
-        body: formData,
+    try {
+      // Step 1: Create the organization row first
+      const { data: orgData, error: orgError } = await supabase
+        .from('organizations')
+        .insert({
+          name: data.orgName,
+          country: data.country || 'IN',
+          address: data.address || null,
+          subscription_status: 'TRIAL',
+          trial_end_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+        })
+        .select('id')
+        .single();
+
+      if (orgError || !orgData) {
+        // RLS may block anon insert — fallback: sign up user first then create org
+        console.warn('[Auth] Org insert failed (RLS), trying signup-first flow:', orgError?.message);
+      }
+
+      const orgId = orgData?.id;
+
+      // Step 2: Sign up the user with metadata
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email: data.email,
+        password,
+        options: {
+          data: {
+            name: data.adminName,
+            org_name: data.orgName,
+            org_id: orgId || null,
+            role: 'ADMIN',
+          },
+          // Skip email confirmation for self-hosted / internal apps
+          emailRedirectTo: `${window.location.origin}/`,
+        },
       });
 
-      // SECURITY: Clear password from memory immediately
-      data.password = '';
+      data.password = ''; // Clear password from memory
 
-      if (error) {
-        let message = error.message;
-        try {
-          // FunctionsHttpError wraps the real body — extract it
-          const body = await (error as any).context?.json?.();
-          if (body?.message) message = body.message;
-        } catch {}
-        console.error('[Auth] Registration 400 body:', message);
-        return { success: false, error: message };
+      if (signUpError) {
+        // Cleanup org if user creation failed
+        if (orgId) await supabase.from('organizations').delete().eq('id', orgId);
+        return { success: false, error: signUpError.message };
       }
-      if (result?.message && !result?.success) return { success: false, error: result.message };
-      if (result?.error) return { success: false, error: result.error };
+
+      if (!authData.user) {
+        if (orgId) await supabase.from('organizations').delete().eq('id', orgId);
+        return { success: false, error: 'Account creation failed. Please try again.' };
+      }
+
+      const userId = authData.user.id;
+
+      // Step 3: If org wasn't created yet (RLS blocked anon), create it now that user exists
+      let finalOrgId = orgId;
+      if (!finalOrgId) {
+        const { data: newOrg } = await supabase
+          .from('organizations')
+          .insert({
+            name: data.orgName,
+            country: data.country || 'IN',
+            address: data.address || null,
+            subscription_status: 'TRIAL',
+            trial_end_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          })
+          .select('id')
+          .single();
+        finalOrgId = newOrg?.id;
+      }
+
+      // Step 4: Update the profile with org, role, verified=true
+      if (finalOrgId) {
+        await supabase
+          .from('profiles')
+          .upsert({
+            id: userId,
+            name: data.adminName,
+            email: data.email,
+            organization_id: finalOrgId,
+            role: 'ADMIN',
+            verified: true,
+            status: 'ACTIVE',
+            designation: 'Admin',
+            department: 'Management',
+            joining_date: new Date().toISOString().split('T')[0],
+          }, { onConflict: 'id' });
+      }
 
       return { success: true };
     } catch (err: any) {
       data.password = '';
-      console.error('[Auth] Registration error');
-      return { success: false, error: err?.message || 'Registration failed.' };
+      console.error('[Auth] Registration error:', err?.message);
+      return { success: false, error: err?.message || 'Registration failed. Please try again.' };
     }
   },
 

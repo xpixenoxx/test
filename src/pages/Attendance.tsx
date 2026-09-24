@@ -17,7 +17,7 @@ import { AttendanceActions } from '../components/attendance/AttendanceActions';
 
 interface AttendanceProps {
   user: any;
-  autoStart?: 'OFFICE' | 'FACTORY' | 'FINISH';
+  autoStart?: 'WFH' | 'OFFICE' | 'FINISH';
   onFinish?: () => void;
 }
 
@@ -39,13 +39,13 @@ const Attendance: React.FC<AttendanceProps> = ({ user, autoStart, onFinish }) =>
     location, isLocating, error: locationError, detectLocation
   } = useGeoLocation();
 
-  // Subscription check for write access
-  const { canPerformAction, subscription } = useSubscription();
+  // Subscription check for write access (always ACTIVE for Pixenox, but guards against suspended accounts)
+  const { canPerformAction } = useSubscription();
   const canPunch = canPerformAction('write');
 
   // 2. Local UI State
   const [remarks, setRemarks] = useState('');
-  const [dutyType, setDutyType] = useState<'OFFICE' | 'FACTORY'>('OFFICE');
+  const [dutyType, setDutyType] = useState<'WFH' | 'OFFICE'>('WFH');
   const [isMobile, setIsMobile] = useState(false);
   const [fallbackPhoto, setFallbackPhoto] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -66,8 +66,10 @@ const Attendance: React.FC<AttendanceProps> = ({ user, autoStart, onFinish }) =>
 
   // Update duty type when autoStart or activeRecord changes (no camera restart)
   useEffect(() => {
-    if (autoStart === 'FACTORY') setDutyType('FACTORY');
-    else if (activeRecord?.dutyType) setDutyType(activeRecord.dutyType);
+    if (autoStart === 'OFFICE') setDutyType('OFFICE');
+    else if (autoStart === 'WFH') setDutyType('WFH');
+    else if (activeRecord?.dutyType) setDutyType(activeRecord.dutyType as 'WFH' | 'OFFICE');
+    // 'FINISH' means check-out — duty type stays from activeRecord
   }, [autoStart, activeRecord?.dutyType]);
 
   // 4. Handlers
@@ -78,16 +80,13 @@ const Attendance: React.FC<AttendanceProps> = ({ user, autoStart, onFinish }) =>
 
   const handlePunchSubmit = async () => {
     if (!canPunch) {
-      if (subscription?.status === 'EXPIRED') {
-        showToast('Your trial has expired. Please upgrade to continue punching attendance.', 'warning');
-      } else if (subscription?.status === 'SUSPENDED') {
-        showToast('Your account is suspended. Please contact support.', 'error');
-      }
+      showToast('Your account is suspended. Please contact support.', 'error');
       return;
     }
 
-    if (dutyType === 'FACTORY' && !remarks.trim()) {
-      showToast("Mandatory: Please mention the Factory Name and details in remarks.", 'warning');
+    // OFFICE/Field visits require remarks (location/client details)
+    if (dutyType === 'OFFICE' && !remarks.trim()) {
+      showToast("Mandatory: Please mention the Office/Client Site location in remarks.", 'warning');
       return;
     }
 
@@ -95,18 +94,20 @@ const Attendance: React.FC<AttendanceProps> = ({ user, autoStart, onFinish }) =>
 
     let selfieData: string | null = null;
 
-    // Try live stream first, then fallback photo
+    // Selfie is mandatory for all punch types
     if (stream && canvasRef.current) {
       selfieData = takeSelfie(canvasRef.current);
     } else if (fallbackPhoto) {
       selfieData = fallbackPhoto;
     } else {
-      // No photo at all — try taking one now
       selfieData = await takePhoto();
       if (selfieData) setFallbackPhoto(selfieData);
     }
 
-    if (!selfieData) return;
+    if (!selfieData) {
+      showToast('Selfie is required. Please allow camera access and try again.', 'warning');
+      return;
+    }
 
     await submitPunch(dutyType, remarks, location, selfieData);
   };
@@ -156,23 +157,19 @@ const Attendance: React.FC<AttendanceProps> = ({ user, autoStart, onFinish }) =>
       {!canPunch && (
         <div className="px-4 py-3 bg-red-50 border-t border-red-200 flex items-center gap-2 text-red-700">
           <AlertTriangle className="w-5 h-5" />
-          <span className="text-sm font-medium">
-            {subscription?.status === 'EXPIRED'
-              ? 'Your trial has expired. Attendance punching is disabled.'
-              : 'Your account is suspended. Please contact support.'}
-          </span>
+          <span className="text-sm font-medium">Your account is suspended. Please contact your admin.</span>
         </div>
       )}
 
       <AttendanceActions
         dutyType={dutyType}
-        dutyLabel={dutyType === 'FACTORY' ? (appConfig?.dutyLabel2 || 'Factory') : (appConfig?.dutyLabel1 || 'Office')}
+        dutyLabel={dutyType === 'OFFICE' ? (appConfig?.dutyLabel2 || 'Office') : (appConfig?.dutyLabel1 || 'WFH')}
         remarks={remarks}
         setRemarks={setRemarks}
         onSubmit={handlePunchSubmit}
         status={status}
         activeRecord={activeRecord}
-        isDisabled={!canPunch || !location || isLocating || status !== 'idle' || !hasPhoto || (dutyType === 'FACTORY' && !remarks.trim())}
+        isDisabled={!canPunch || !location || isLocating || status !== 'idle' || !hasPhoto || (dutyType === 'OFFICE' && !remarks.trim())}
       />
 
       <canvas ref={canvasRef} className="hidden" />

@@ -150,19 +150,8 @@ export const aiEmailService = {
    * already read. The SQL comes back with the answer on purpose — a generated
    * query you cannot inspect is a query you cannot check.
    */
-  async askReport(question: string, provider?: EmailProvider, model?: string): Promise<ReportResult> {
-    const { data, error } = await supabase.functions.invoke('ai-admin-report', {
-      body: { question, provider, model },
-    });
-    if (error) {
-      let message = error.message;
-      try {
-        const body = await (error as any).context?.json?.();
-        if (body?.message) message = body.message;
-      } catch { /* keep the original */ }
-      throw new Error(message);
-    }
-    return data as ReportResult;
+  async askReport(_question: string, _provider?: EmailProvider, _model?: string): Promise<ReportResult> {
+    throw new Error('AI Report feature requires additional configuration. Contact your system administrator.');
   },
 
   async getTemplates(): Promise<EmailTemplate[]> {
@@ -296,27 +285,11 @@ export const aiEmailService = {
    * rate-limited model can be swapped and re-checked before anything is stored.
    */
   async preview(
-    templateKey: string,
-    mode: 'preview' | 'test-send' = 'preview',
-    overrides?: { provider?: EmailProvider; model?: string },
+    _templateKey: string,
+    _mode: 'preview' | 'test-send' = 'preview',
+    _overrides?: { provider?: EmailProvider; model?: string },
   ): Promise<PreviewResult> {
-    const { data, error } = await supabase.functions.invoke('ai-email-preview', {
-      body: {
-        templateKey,
-        mode,
-        provider: overrides?.provider,
-        model: overrides?.model?.trim() || undefined,
-      },
-    });
-    if (error) {
-      let message = error.message;
-      try {
-        const body = await (error as any).context?.json?.();
-        if (body?.message) message = body.message;
-      } catch { /* keep the original message */ }
-      throw new Error(message);
-    }
-    return data as PreviewResult;
+    throw new Error('AI Email Preview requires additional configuration. Contact your system administrator.');
   },
 
   async getSends(limit = 100): Promise<EmailSend[]> {

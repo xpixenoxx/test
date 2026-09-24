@@ -5,7 +5,7 @@ import path from 'path';
 /**
  * Theme boot behaviour.
  *
- * OpenHRApp has one brand colour, defined once in src/index.css. The selectable
+ * Pixenox has one brand colour, defined once in src/index.css. The selectable
  * accent theme it used to carry — fourteen palettes, a super-admin picker, and a
  * `default_theme` row fetched from Supabase — has been removed, along with the
  * three defects that came with it: a bulk "apply to all organizations" write
@@ -43,7 +43,7 @@ describe('brand colour is defined once, in CSS', () => {
   it('no longer ships a palette table in the boot script', () => {
     expect(indexHtml).not.toContain('arctic-frost');
     expect(indexHtml).not.toContain('charcoal-slate');
-    expect(indexHtml).not.toContain("localStorage.getItem('openhr-global-theme')");
+    expect(indexHtml).not.toContain("localStorage.getItem('pixenox-global-theme')");
   });
 
   it('no longer fetches a theme over the network', () => {
@@ -80,13 +80,13 @@ describe('dark mode does not flash between two states on refresh', () => {
 
   it('keeps the pre-paint boot script that sets the class', () => {
     expect(indexHtml).toContain('Dark mode preload');
-    expect(indexHtml).toContain("localStorage.getItem('openhr-dark-mode')");
+    expect(indexHtml).toContain("localStorage.getItem('pixenox-dark-mode')");
   });
 
   it('reads and writes the same localStorage key as the boot script', () => {
     // A mismatch here means the boot script and React disagree on every load.
     const keyInContext = /const DARK_MODE_KEY = '([^']+)'/.exec(themeContext)?.[1];
-    expect(keyInContext).toBe('openhr-dark-mode');
+    expect(keyInContext).toBe('pixenox-dark-mode');
     expect(indexHtml).toContain(`localStorage.getItem('${keyInContext}')`);
   });
 

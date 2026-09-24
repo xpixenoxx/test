@@ -57,9 +57,9 @@ const AIEmail: React.FC = () => {
   // the onboarding email. The choice is remembered because free models get
   // rate-limited often enough that re-picking on every reload would grate.
   const [askProvider, setAskProvider] = useState<EmailProvider>(
-    () => (localStorage.getItem('openhr.ask.provider') as EmailProvider) || 'openrouter');
+    () => (localStorage.getItem('pixenox.ask.provider') as EmailProvider) || 'openrouter');
   const [askModel, setAskModel] = useState(
-    () => localStorage.getItem('openhr.ask.model') || 'google/gemma-4-31b-it:free');
+    () => localStorage.getItem('pixenox.ask.model') || 'google/gemma-4-31b-it:free');
   const [question, setQuestion] = useState('');
   const [report, setReport] = useState<ReportResult | null>(null);
   const [isAsking, setIsAsking] = useState(false);
@@ -97,8 +97,8 @@ const AIEmail: React.FC = () => {
   useEffect(() => { load(); loadModels(); }, []);
 
   useEffect(() => {
-    localStorage.setItem('openhr.ask.provider', askProvider);
-    localStorage.setItem('openhr.ask.model', askModel);
+    localStorage.setItem('pixenox.ask.provider', askProvider);
+    localStorage.setItem('pixenox.ask.model', askModel);
   }, [askProvider, askModel]);
 
   useEffect(() => {

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Building2, User, Mail, Lock, ArrowRight, Loader2, ArrowLeft, CheckCircle2, Globe, MapPin, Upload } from 'lucide-react';
 import { hrService } from '../services/hrService';
-import { RegistrationVerificationPage } from '../components/registration/RegistrationVerificationPage';
 import Turnstile from '../components/shared/Turnstile';
 import { COUNTRIES, getFlagEmoji } from '../data/countries';
 
@@ -95,10 +94,26 @@ const RegisterOrganization: React.FC<Props> = ({ onBack }) => {
 
   if (isSuccess) {
     return (
-      <RegistrationVerificationPage 
-        email={formData.email} 
-        onVerificationComplete={onBack} 
-      />
+      <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#f8fafc]">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-10 text-center animate-in fade-in zoom-in duration-300">
+          <div className="w-20 h-20 mx-auto bg-emerald-50 rounded-full flex items-center justify-center mb-6">
+            <CheckCircle2 size={40} className="text-emerald-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Organization Created!</h2>
+          <p className="text-slate-500 text-sm mb-2">
+            <span className="font-bold text-slate-700">{formData.orgName}</span> has been set up successfully.
+          </p>
+          <p className="text-slate-400 text-xs mb-8">
+            You can now log in with <span className="font-bold text-slate-600">{formData.email}</span>
+          </p>
+          <button
+            onClick={onBack}
+            className="w-full py-4 bg-primary hover:bg-primary-hover text-white rounded-xl font-semibold text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+          >
+            <ArrowRight size={18} /> Go to Login
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -117,7 +132,7 @@ const RegisterOrganization: React.FC<Props> = ({ onBack }) => {
                 stays ad-free by donating (ACTIVE). "Start your 14-day free
                 trial" implied the product started costing money on day 15 and
                 contradicted the site's own FAQ, which states there is no trial
-                period because OpenHRApp is permanently free. */}
+                period because Pixenox is permanently free. */}
             <p className="text-slate-400 font-medium mt-1">Free forever — your first 14 days are ad-free</p>
           </div>
         </div>

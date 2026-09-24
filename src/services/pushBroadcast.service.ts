@@ -37,12 +37,10 @@ export interface BroadcastHistoryRow {
   created: string;
 }
 
-async function invokeAdminSendPush(payload: Record<string, unknown>): Promise<BroadcastResult> {
-  const { data, error } = await supabase.functions.invoke('admin-send-push', { body: payload });
-  if (error) {
-    return { success: false, message: error.message || 'Edge Function error' };
-  }
-  return data as BroadcastResult;
+async function invokeAdminSendPush(_payload: Record<string, unknown>): Promise<BroadcastResult> {
+  // Push notifications require VAPID configuration and edge functions.
+  // Return graceful error so the UI can show a proper message.
+  return { success: false, message: 'Push notifications require additional server configuration.' };
 }
 
 export const pushBroadcastService = {

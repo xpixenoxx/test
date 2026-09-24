@@ -110,7 +110,7 @@ export const RegistrationVerificationPage: React.FC<RegistrationVerificationPage
                 <p className="font-bold">Don't see the email?</p>
                 <p className="mt-1">
                   <span className="font-semibold">Check your spam or junk folder.</span> Verification emails sometimes
-                  land there. The message comes from <span className="font-mono text-xs">noreply@openhrapp.com</span>.
+                  land there. The message comes from <span className="font-mono text-xs">noreply@pixenox.com</span>.
                 </p>
               </div>
             </div>

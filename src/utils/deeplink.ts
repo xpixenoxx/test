@@ -1,14 +1,13 @@
 /**
  * Hash-based deep linking utility for authenticated routes.
  *
- * OpenHRApp uses React state-based routing (currentPath in App.tsx) with no URL
+ * Pixenox HRM uses React state-based routing (currentPath in App.tsx) with no URL
  * representation for authenticated pages. This module adds hash-based routing
  * so that authenticated pages are shareable, bookmarkable, and support browser
  * back/forward — without a full React Router migration.
  *
- * Public pages (landing, blog, tutorials, privacy, terms, features, changelog,
- * about) already use clean URL paths via navigateTo() in seo.ts and are NOT
- * affected by this module.
+ * authenticated pages already use clean URL paths via navigateTo() in seo.ts and
+ * are NOT affected by this module.
  *
  * ## How it works
  *
@@ -63,8 +62,8 @@ const ROUTE_TABLE: RouteEntry[] = [
   { regex: /^#\/employees\/?$/,              path: 'employees',        paramNames: [] },
 
   // -- Attendance clock-in shortcuts (must be before generic attendance) --
-  { regex: /^#\/attendance\/quick-office\/?$/, path: 'attendance',     paramNames: [] },  // params set in reverse map
-  { regex: /^#\/attendance\/quick-factory\/?$/,path: 'attendance',     paramNames: [] },
+  { regex: /^#\/attendance\/quick-office\/?$/, path: 'attendance',     paramNames: [] },  // WFH = primary (attendance-quick-office)
+  { regex: /^#\/attendance\/quick-factory\/?$/,path: 'attendance',     paramNames: [] },  // Office/Field = secondary
   { regex: /^#\/attendance\/finish\/?$/,      path: 'attendance',      paramNames: [] },
   { regex: /^#\/attendance\/clock-in\/?$/,    path: 'attendance',      paramNames: [] },
 

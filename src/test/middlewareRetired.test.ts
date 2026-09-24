@@ -24,26 +24,26 @@ const req = (url: string) => new Request(url, { headers: { 'User-Agent': 'Mozill
 
 describe('retired guide URLs redirect instead of soft-404ing', () => {
   it('theme-customization permanently redirects to the guide that absorbed it', async () => {
-    const res = await middleware(req('https://openhrapp.com/how-to-use/theme-customization'));
+    const res = await middleware(req('https://pixenox.com/how-to-use/theme-customization'));
     expect(res).toBeDefined();
     expect(res!.status).toBe(301);
     expect(res!.headers.get('Location')).toBe('/how-to-use/managing-profile-settings');
   });
 
   it('a trailing slash redirects the same way', async () => {
-    const res = await middleware(req('https://openhrapp.com/how-to-use/theme-customization/'));
+    const res = await middleware(req('https://pixenox.com/how-to-use/theme-customization/'));
     expect(res!.status).toBe(301);
     expect(res!.headers.get('Location')).toBe('/how-to-use/managing-profile-settings');
   });
 
   it('301, not 302 — a temporary redirect passes no authority and is re-checked forever', async () => {
-    const res = await middleware(req('https://openhrapp.com/how-to-use/theme-customization'));
+    const res = await middleware(req('https://pixenox.com/how-to-use/theme-customization'));
     expect(res!.status).not.toBe(302);
     expect(res!.status).not.toBe(307);
   });
 
   it('redirects before the crawler check, so humans and bots are treated alike', async () => {
-    const bot = new Request('https://openhrapp.com/how-to-use/theme-customization', {
+    const bot = new Request('https://pixenox.com/how-to-use/theme-customization', {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' },
     });
     const res = await middleware(bot);
@@ -52,7 +52,7 @@ describe('retired guide URLs redirect instead of soft-404ing', () => {
 
   it('a live guide is untouched', async () => {
     // Not in the retired map, so it must not short-circuit into a redirect.
-    const res = await middleware(req('https://openhrapp.com/how-to-use/managing-profile-settings'));
+    const res = await middleware(req('https://pixenox.com/how-to-use/managing-profile-settings'));
     if (res) expect(res.status).not.toBe(301);
   });
 

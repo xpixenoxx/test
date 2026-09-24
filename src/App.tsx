@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import { Loader2 } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -8,7 +7,6 @@ import { SearchProvider } from './context/SearchContext';
 import { SubscriptionProvider, useSubscription } from './context/SubscriptionContext';
 import { ToastProvider } from './context/ToastContext';
 import MainLayout from './layouts/MainLayout';
-import CookieConsent from './components/CookieConsent';
 import SearchDialog from './components/search/SearchDialog';
 import { PWAUpdateBanner } from './components/PWAUpdateBanner';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -16,92 +14,35 @@ import { lazyWithReload } from './utils/lazyWithReload';
 import { supabase } from './services/supabase';
 import { sessionManager } from './services/session/sessionManager';
 
-// Eager: public pages needed for first paint / SEO
+// Eager: pages needed for first paint
 import Login from './pages/Login';
 import Setup from './pages/Setup';
-import RegisterOrganization from './pages/RegisterOrganization';
-import LandingPage from './pages/LandingPage';
 import { VerifyAccount } from './pages/VerifyAccount';
 import { ResetPassword } from './pages/ResetPassword';
 import { SuspendedPage } from './components/subscription';
-import BlogPage from './pages/BlogPage';
-import BlogPostPage from './pages/BlogPostPage';
-import TutorialsPage from './pages/TutorialsPage';
-import TutorialPage from './pages/TutorialPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import TermsOfServicePage from './pages/TermsOfServicePage';
-import NotFoundPage from './pages/NotFoundPage';
-import FeaturesPage from './pages/FeaturesPage';
-import FeatureDetailPage from './pages/FeatureDetailPage';
-import ChangelogPage from './pages/ChangelogPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
+import RegisterOrganization from './pages/RegisterOrganization';
 
 // Lazy: authenticated pages loaded on demand after login.
-// lazyWithReload auto-recovers from stale chunk hashes after a deploy
-// (one-shot reload + SW/cache wipe) so users don't get stuck on a blank
-// page when their cached service worker still references deleted assets.
 const Dashboard = lazyWithReload(() => import('./pages/Dashboard'));
 const EmployeeDirectory = lazyWithReload(() => import('./pages/EmployeeDirectory'));
 const Attendance = lazyWithReload(() => import('./pages/Attendance'));
 const AttendanceLogs = lazyWithReload(() => import('./pages/AttendanceLogs'));
 const Leave = lazyWithReload(() => import('./pages/Leave'));
+const Projects = lazyWithReload(() => import('./pages/Projects'));
+const Payroll = lazyWithReload(() => import('./pages/Payroll'));
+const Expenses = lazyWithReload(() => import('./pages/Expenses'));
+const Assets = lazyWithReload(() => import('./pages/Assets'));
+const Documents = lazyWithReload(() => import('./pages/Documents'));
+const Invoices = lazyWithReload(() => import('./pages/Invoices'));
 const Settings = lazyWithReload(() => import('./pages/Settings'));
 const Reports = lazyWithReload(() => import('./pages/Reports'));
 const Organization = lazyWithReload(() => import('./pages/Organization'));
 const SuperAdmin = lazyWithReload(() => import('./pages/SuperAdmin'));
-const Upgrade = lazyWithReload(() => import('./pages/Upgrade'));
 const PerformanceReview = lazyWithReload(() => import('./pages/PerformanceReview'));
 const Announcements = lazyWithReload(() => import('./pages/Announcements'));
 const AdminNotifications = lazyWithReload(() => import('./pages/AdminNotifications'));
-
-import { navigateTo } from './utils/seo';
 import { getCurrentRoute, navigateToRoute, replaceRoute } from './utils/deeplink';
 import { PushPermissionPrompt } from './components/PushPermissionPrompt';
-
-// Parse features route from pathname
-const parseFeaturesRoute = (pathname: string) => {
-  if (pathname === '/features' || pathname === '/features/') {
-    return { type: 'list' as const };
-  }
-  const match = pathname.match(/^\/features\/(.+)$/);
-  if (match && match[1]) {
-    return { type: 'detail' as const, slug: match[1] };
-  }
-  return null;
-};
-
-// Parse changelog route from pathname
-const parseChangelogRoute = (pathname: string) => {
-  if (pathname === '/changelog' || pathname === '/changelog/') {
-    return true;
-  }
-  return false;
-};
-
-// Parse blog route from pathname
-const parseBlogRoute = (pathname: string) => {
-  if (pathname === '/blog' || pathname === '/blog/') {
-    return { type: 'list' as const };
-  }
-  const match = pathname.match(/^\/blog\/(.+)$/);
-  if (match && match[1]) {
-    return { type: 'post' as const, slug: match[1] };
-  }
-  return null;
-};
-
-// Parse tutorial route from pathname
-const parseTutorialRoute = (pathname: string) => {
-  if (pathname === '/how-to-use' || pathname === '/how-to-use/') {
-    return { type: 'list' as const };
-  }
-  const match = pathname.match(/^\/how-to-use\/(.+)$/);
-  if (match && match[1]) {
-    return { type: 'single' as const, slug: match[1] };
-  }
-  return null;
-};
 
 const AppContent: React.FC = () => {
   const { user, isLoading, isConfigured, setConfigured, login, logout } = useAuth();
@@ -109,92 +50,13 @@ const AppContent: React.FC = () => {
   const [currentPath, setCurrentPath] = useState('dashboard');
   const [navParams, setNavParams] = useState<any>(null);
 
-  // Public Pages State
-  const [showLanding, setShowLanding] = useState(true);
-  const [showRegister, setShowRegister] = useState(false);
+  // Auth flow state
   const [verificationToken, setVerificationToken] = useState<string | null>(null);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
-  const [blogRoute, setBlogRoute] = useState<{ type: 'list' | 'post'; slug?: string } | null>(() => {
-    return parseBlogRoute(window.location.pathname);
-  });
-  const [tutorialRoute, setTutorialRoute] = useState<{ type: 'list' | 'single'; slug?: string } | null>(() => {
-    return parseTutorialRoute(window.location.pathname);
-  });
-  const [policyRoute, setPolicyRoute] = useState<'privacy' | 'terms' | null>(() => {
-    const path = window.location.pathname;
-    if (path === '/privacy' || path === '/privacy/') return 'privacy';
-    if (path === '/terms' || path === '/terms/') return 'terms';
-    return null;
-  });
-  const [featuresRoute, setFeaturesRoute] = useState<{ type: 'list' | 'detail'; slug?: string } | null>(() => {
-    return parseFeaturesRoute(window.location.pathname);
-  });
-  const [changelogRoute, setChangelogRoute] = useState<boolean>(() => {
-    return parseChangelogRoute(window.location.pathname);
-  });
-  const [aboutRoute, setAboutRoute] = useState<boolean>(() => {
-    const path = window.location.pathname;
-    return path === '/about' || path === '/about/';
-  });
-  const [contactRoute, setContactRoute] = useState<boolean>(() => {
-    const path = window.location.pathname;
-    return path === '/contact' || path === '/contact/';
-  });
-  const [is404, setIs404] = useState<boolean>(() => {
-    const path = window.location.pathname;
-    const hash = window.location.hash;
-    const search = window.location.search;
-    const knownPaths = ['/', '/privacy', '/privacy/', '/terms', '/terms/', '/features', '/features/', '/changelog', '/changelog/', '/about', '/about/', '/contact', '/contact/', '/_/', '/_'];
-
-    // Don't show 404 if URL contains a verification token
-    if (new URLSearchParams(search).has('token')) return false;
-    if (hash.includes('token=')) return false;
-    if (hash.includes('/auth/confirm-verification/')) return false;
-
-    // Don't show 404 for blog/tutorial/features/changelog/about clean URL routes
-    if (parseBlogRoute(path)) return false;
-    if (parseTutorialRoute(path)) return false;
-    if (parseFeaturesRoute(path)) return false;
-    if (parseChangelogRoute(path)) return false;
-    if (path === '/about' || path === '/about/') return false;
-    if (path === '/contact' || path === '/contact/') return false;
-
-    // Don't show 404 for hash-based routes (legacy compat)
-    if (hash && hash !== '#' && hash !== '#/') return false;
-
-    // Clean up /_/ path (PocketBase admin path leaked into verification URLs)
-    if (path === '/_/' || path === '/_') {
-      window.history.replaceState(null, '', '/' + search + hash);
-      return false;
-    }
-
-    // Handle legacy email deep-link paths: /dashboard/<orgId>/<leaveId>/<token>
-    // These are generated by older versions of the leave notification system.
-    // Extract the leave ID and redirect to the hash-based deep link route.
-    if (path.startsWith('/dashboard/')) {
-      const dashMatch = path.match(/^\/dashboard\/\d+\/([a-z0-9]{15,})/i);
-      if (dashMatch && dashMatch[1]) {
-        window.location.replace(`/#/leave/${dashMatch[1]}`);
-      } else {
-        window.location.replace('/#/dashboard');
-      }
-      return false;
-    }
-
-    // Plain /dashboard (no trailing path) — redirect to hash-based dashboard
-    if (path === '/dashboard' || path === '/dashboard/') {
-      window.location.replace('/#/dashboard');
-      return false;
-    }
-
-    return !knownPaths.includes(path);
-  });
+  const [showRegistration, setShowRegistration] = useState(false);
 
   // Check URL for verification token on mount
   useEffect(() => {
-    // Skip if on a recognized route
-    if (policyRoute || blogRoute || tutorialRoute || featuresRoute || changelogRoute) return;
-
     let token: string | null = null;
 
     // 1. Check Search Params (Standard: /?token=...)
@@ -221,28 +83,22 @@ const AppContent: React.FC = () => {
       return;
     }
 
-    // Check for password reset redirect: /?reset=1 (query) or #type=recovery (hash, Supabase default)
+    // Check for password reset redirect
     const queryReset = new URLSearchParams(window.location.search).get('reset') === '1';
     const hashRecovery = window.location.hash.includes('type=recovery');
     if (queryReset || hashRecovery) {
       setShowPasswordReset(true);
-      setShowLanding(false);
-      // Strip query but KEEP hash — supabase-js needs hash tokens to establish recovery session
       if (queryReset) {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     }
   }, []);
 
-  // Listen for Supabase auth state changes (PASSWORD_RECOVERY, SIGNED_OUT).
-  // When Supabase clears the session externally (another tab signs out, token
-  // revocation, SDK auto-cleanup after failed refresh), sync sessionManager
-  // so the UI immediately reflects the correct auth state.
+  // Listen for Supabase auth state changes
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowPasswordReset(true);
-        setShowLanding(false);
       }
       if (event === 'SIGNED_OUT') {
         const snap = sessionManager.getSnapshot();
@@ -254,50 +110,17 @@ const AppContent: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Legacy hash redirect: redirect old #/blog and #/how-to-use URLs to clean paths
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-
-      // Redirect legacy hash blog routes to clean URLs
-      if (hash === '#/blog' || hash === '#/blog/') {
-        navigateTo('/blog');
-        return;
-      }
-      const blogMatch = hash.match(/^#\/blog\/(.+)$/);
-      if (blogMatch && blogMatch[1]) {
-        navigateTo(`/blog/${blogMatch[1]}`);
-        return;
-      }
-
-      // Redirect legacy hash tutorial routes to clean URLs
-      if (hash === '#/how-to-use' || hash === '#/how-to-use/') {
-        navigateTo('/how-to-use');
-        return;
-      }
-      const tutorialMatch = hash.match(/^#\/how-to-use\/(.+)$/);
-      if (tutorialMatch && tutorialMatch[1]) {
-        navigateTo(`/how-to-use/${tutorialMatch[1]}`);
-        return;
-      }
-    };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
   // Deep link: listen for hash changes (back/forward, direct URL navigation, bookmarks)
   useEffect(() => {
     const handleDeepLinkHashChange = () => {
       const route = getCurrentRoute();
       if (route && user) {
-        // Map special attendance shortcut params that come from hash patterns
-        // rather than from reverse-map params
         const hash = window.location.hash.replace(/^#/, '').replace(/\/+$/, '');
         let resolvedParams = route.params;
         if (route.path === 'attendance' && !resolvedParams) {
-          // Hash pattern matched a shortcut — derive autoStart from the hash
-          if (hash === '/attendance/quick-office') resolvedParams = { autoStart: 'OFFICE' };
-          else if (hash === '/attendance/quick-factory') resolvedParams = { autoStart: 'FACTORY' };
+          // quick-office = WFH (primary), quick-factory = Office/Field (secondary)
+          if (hash === '/attendance/quick-office') resolvedParams = { autoStart: 'WFH' };
+          else if (hash === '/attendance/quick-factory') resolvedParams = { autoStart: 'OFFICE' };
           else if (hash === '/attendance/finish') resolvedParams = { autoStart: 'FINISH' };
         }
         setCurrentPath(route.path);
@@ -308,100 +131,6 @@ const AppContent: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleDeepLinkHashChange);
   }, [user]);
 
-  // Listen for popstate (browser back/forward) for clean URL routes
-  useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      const hash = window.location.hash;
-      const search = window.location.search;
-      const knownPaths = ['/', '/privacy', '/privacy/', '/terms', '/terms/', '/features', '/features/', '/changelog', '/changelog/', '/about', '/about/', '/contact', '/contact/', '/_/', '/_'];
-
-      // Never show 404 for verification tokens or hash-based routes
-      const hasToken = new URLSearchParams(search).has('token') || hash.includes('token=') || hash.includes('/auth/confirm-verification/');
-      const hasHashRoute = hash && hash !== '#' && hash !== '#/';
-
-      const clearAll = () => { setPolicyRoute(null); setBlogRoute(null); setTutorialRoute(null); setFeaturesRoute(null); setChangelogRoute(false); setAboutRoute(false); setContactRoute(false); };
-
-      // Clean up /_/ path (PocketBase admin path leaked into verification URLs)
-      if (path === '/_/' || path === '/_') {
-        window.history.replaceState(null, '', '/' + search + hash);
-        clearAll();
-        setIs404(false);
-        return;
-      }
-
-      // Check changelog route
-      if (parseChangelogRoute(path)) {
-        clearAll();
-        setChangelogRoute(true);
-        setIs404(false);
-        return;
-      }
-
-      // Check about route (must be before features since it's a separate path)
-      if (path === '/about' || path === '/about/') {
-        clearAll();
-        setAboutRoute(true);
-        setIs404(false);
-        return;
-      }
-
-      // Check contact route (separate path, same reasoning as /about)
-      if (path === '/contact' || path === '/contact/') {
-        clearAll();
-        setContactRoute(true);
-        setIs404(false);
-        return;
-      }
-
-      // Check features routes (must be before blog/tutorial since /features/slug is a pattern)
-      const featuresMatch = parseFeaturesRoute(path);
-      if (featuresMatch) {
-        clearAll();
-        setFeaturesRoute(featuresMatch);
-        setIs404(false);
-        return;
-      }
-
-      // Check blog routes
-      const blogMatch = parseBlogRoute(path);
-      if (blogMatch) {
-        clearAll();
-        setBlogRoute(blogMatch);
-        setIs404(false);
-        return;
-      }
-
-      // Check tutorial routes
-      const tutorialMatch = parseTutorialRoute(path);
-      if (tutorialMatch) {
-        clearAll();
-        setTutorialRoute(tutorialMatch);
-        setIs404(false);
-        return;
-      }
-
-      // Check policy routes
-      if (path === '/privacy' || path === '/privacy/') {
-        clearAll();
-        setPolicyRoute('privacy');
-        setIs404(false);
-      } else if (path === '/terms' || path === '/terms/') {
-        clearAll();
-        setPolicyRoute('terms');
-        setIs404(false);
-      } else if (path === '/' || knownPaths.includes(path) || hasToken || hasHashRoute) {
-        clearAll();
-        setIs404(false);
-      } else {
-        clearAll();
-        setIs404(true);
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
   // On auth: read initial hash for deep linking (bookmark, shared link)
   useEffect(() => {
     if (user && !isLoading) {
@@ -411,8 +140,8 @@ const AppContent: React.FC = () => {
         const hash = window.location.hash.replace(/^#/, '').replace(/\/+$/, '');
         let resolvedParams = route.params;
         if (route.path === 'attendance' && !resolvedParams) {
-          if (hash === '/attendance/quick-office') resolvedParams = { autoStart: 'OFFICE' };
-          else if (hash === '/attendance/quick-factory') resolvedParams = { autoStart: 'FACTORY' };
+          if (hash === '/attendance/quick-office') resolvedParams = { autoStart: 'WFH' };
+          else if (hash === '/attendance/quick-factory') resolvedParams = { autoStart: 'OFFICE' };
           else if (hash === '/attendance/finish') resolvedParams = { autoStart: 'FINISH' };
         }
         setCurrentPath(route.path);
@@ -428,13 +157,15 @@ const AppContent: React.FC = () => {
 
   const handleNavigate = (path: string, params?: any) => {
     if (path === 'attendance-quick-office') {
+      // WFH = primary check-in mode
+      setCurrentPath('attendance');
+      setNavParams({ autoStart: 'WFH' });
+      navigateToRoute('attendance', { autoStart: 'WFH' });
+    } else if (path === 'attendance-quick-factory') {
+      // Office/Field = secondary check-in mode
       setCurrentPath('attendance');
       setNavParams({ autoStart: 'OFFICE' });
       navigateToRoute('attendance', { autoStart: 'OFFICE' });
-    } else if (path === 'attendance-quick-factory') {
-      setCurrentPath('attendance');
-      setNavParams({ autoStart: 'FACTORY' });
-      navigateToRoute('attendance', { autoStart: 'FACTORY' });
     } else if (path === 'attendance-finish') {
       setCurrentPath('attendance');
       setNavParams({ autoStart: 'FINISH' });
@@ -450,65 +181,14 @@ const AppContent: React.FC = () => {
     return <Setup onComplete={() => setConfigured(true)} />;
   }
 
-  // Priority 0a: Public Policy Pages (accessible regardless of auth, clean URLs)
-  if (policyRoute === 'privacy') {
-    return <PrivacyPolicyPage onBack={() => { navigateTo('/'); }} />;
-  }
-  if (policyRoute === 'terms') {
-    return <TermsOfServicePage onBack={() => { navigateTo('/'); }} />;
-  }
-  // Priority 0b: Public Features pages (accessible regardless of auth)
-  if (featuresRoute) {
-    if (featuresRoute.type === 'detail' && featuresRoute.slug) {
-      return <FeatureDetailPage slug={featuresRoute.slug} onBack={() => { navigateTo('/features'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-    }
-    return <FeaturesPage onBack={() => { navigateTo('/'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-  }
-
-  // Priority 0c: Public Changelog (accessible regardless of auth)
-  if (changelogRoute) {
-    return <ChangelogPage onBack={() => { navigateTo('/'); }} />;
-  }
-
-  // Priority 0c2: Public About (accessible regardless of auth)
-  if (aboutRoute) {
-    return <AboutPage onBack={() => { navigateTo('/'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-  }
-
-  // Priority 0c3: Public Contact (accessible regardless of auth)
-  if (contactRoute) {
-    return <ContactPage onBack={() => { navigateTo('/'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-  }
-
-  // Priority 0d: Public Tutorials (accessible regardless of auth)
-  if (tutorialRoute) {
-    if (tutorialRoute.type === 'single' && tutorialRoute.slug) {
-      return <TutorialPage slug={tutorialRoute.slug} onBack={() => { navigateTo('/how-to-use'); }} />;
-    }
-    return <TutorialsPage onBack={() => { navigateTo('/'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-  }
-
-  // Priority 0: Public Blog (accessible regardless of auth)
-  if (blogRoute) {
-    if (blogRoute.type === 'post' && blogRoute.slug) {
-      return <BlogPostPage slug={blogRoute.slug} onBack={() => { navigateTo('/blog'); }} />;
-    }
-    return <BlogPage onBack={() => { navigateTo('/'); }} onRegisterClick={() => { navigateTo('/'); setShowLanding(false); setShowRegister(true); }} />;
-  }
-
-  // Priority 1: Verification Flow (must come BEFORE 404 check)
+  // Verification Flow
   if (verificationToken) {
-    return <VerifyAccount token={verificationToken} onFinished={() => { setVerificationToken(null); setShowLanding(false); setShowRegister(false); }} />;
+    return <VerifyAccount token={verificationToken} onFinished={() => { setVerificationToken(null); }} />;
   }
 
-  // Priority 1.5: Password Reset Flow
+  // Password Reset Flow
   if (showPasswordReset) {
-    return <ResetPassword onFinished={() => { setShowPasswordReset(false); setShowLanding(false); }} />;
-  }
-
-  // 404: Unknown clean URL path (after all valid routes are checked)
-  if (is404) {
-    return <NotFoundPage onGoHome={() => { navigateTo('/'); }} />;
+    return <ResetPassword onFinished={() => { setShowPasswordReset(false); }} />;
   }
 
   if (isLoading) {
@@ -519,21 +199,20 @@ const AppContent: React.FC = () => {
     );
   }
 
-  // Priority 2: Public Landing/Login/Register
+  // Unauthenticated — show Registration or Login
   if (!user) {
-    if (showRegister) {
-      return <RegisterOrganization onBack={() => { setShowRegister(false); setShowLanding(true); }} onSuccess={login} />;
+    if (showRegistration) {
+      return (
+        <RegisterOrganization
+          onBack={() => setShowRegistration(false)}
+          onSuccess={(_email) => {
+            setShowRegistration(false);
+            // Optionally, pre-fill email in Login if we wanted to
+          }}
+        />
+      );
     }
-    if (!showLanding) {
-      return <Login onLoginSuccess={login} onRegisterClick={() => setShowRegister(true)} onBackToLanding={() => setShowLanding(true)} />;
-    }
-    return (
-      <LandingPage
-        onLoginClick={() => setShowLanding(false)}
-        onRegisterClick={() => { setShowLanding(false); setShowRegister(true); }}
-        onLoginSuccess={login}
-      />
-    );
+    return <Login onLoginSuccess={login} onRegisterClick={() => setShowRegistration(true)} />;
   }
 
   // Check if Super Admin
@@ -545,7 +224,7 @@ const AppContent: React.FC = () => {
     return <SuspendedPage onLogout={logout} />;
   }
 
-  // Priority 3: Authenticated App
+  // Authenticated App
   const renderContent = () => {
     // Super Admin has a dedicated dashboard
     if (isSuperAdmin && (currentPath === 'dashboard' || currentPath === 'super-admin')) {
@@ -555,11 +234,6 @@ const AppContent: React.FC = () => {
     switch (currentPath) {
       case 'dashboard': return <Dashboard user={user} onNavigate={handleNavigate} />;
       case 'super-admin': return <SuperAdmin user={user} onNavigate={handleNavigate} />;
-      case 'upgrade':
-        if (user.role === 'ADMIN' || user.role === 'HR') {
-          return <Upgrade onBack={() => handleNavigate('dashboard')} />;
-        }
-        return <Dashboard user={user} onNavigate={handleNavigate} />;
       case 'profile': return <Settings user={user} onBack={() => handleNavigate('dashboard')} />;
       case 'employees': return <EmployeeDirectory user={user} selectedEmployeeId={navParams?.selectedEmployeeId} />;
       case 'attendance':
@@ -575,6 +249,12 @@ const AppContent: React.FC = () => {
       case 'attendance-logs': return <AttendanceLogs user={user} viewMode="MY" filterEmployeeId={navParams?.filterEmployeeId} />;
       case 'attendance-audit': return <AttendanceLogs user={user} viewMode="AUDIT" />;
       case 'leave': return <Leave user={user} autoOpen={navParams?.autoOpen} openLeaveId={navParams?.openLeaveId} />;
+      case 'projects': return <Projects user={user} />;
+      case 'payroll': return <Payroll user={user} />;
+      case 'expenses': return <Expenses user={user} />;
+      case 'assets': return <Assets user={user} />;
+      case 'documents': return <Documents user={user} />;
+      case 'invoices': return <Invoices user={user} />;
       case 'announcements': return <Announcements user={user} />;
       case 'admin-notifications': return <AdminNotifications user={user} />;
       case 'performance-review': return <PerformanceReview user={user} />;
@@ -621,8 +301,6 @@ const App: React.FC = () => {
             <SearchProvider>
               <AppContent />
               <SearchDialog />
-              <Analytics />
-              <CookieConsent />
               <PWAUpdateBanner />
             </SearchProvider>
           </ToastProvider>

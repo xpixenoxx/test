@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const GA_ID = 'G-KNNWM2N5NL';
-const STORAGE_KEY = 'openhr-cookie-consent';
+const STORAGE_KEY = 'pixenox-cookie-consent';
 
 function loadGoogleAnalytics() {
   if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_ID}"]`)) return;

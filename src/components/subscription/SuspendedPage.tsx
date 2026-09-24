@@ -47,9 +47,9 @@ export const SuspendedPage: React.FC<SuspendedPageProps> = ({
         <div className="border-t pt-6 mb-6">
           <p className="text-slate-600 mb-4">Contact us to resolve this issue:</p>
           <div className="flex flex-col gap-2 text-sm">
-            <a href="mailto:support@openhr.app" className="flex items-center justify-center gap-2 text-primary hover:underline">
+            <a href="mailto:support@pixenox.app" className="flex items-center justify-center gap-2 text-primary hover:underline">
               <Mail className="w-4 h-4" />
-              support@openhr.app
+              support@pixenox.app
             </a>
           </div>
         </div>

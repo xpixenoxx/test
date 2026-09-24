@@ -85,7 +85,7 @@ const EmailComposer: React.FC<Props> = ({ value, onChange, placeholders = [] }) 
     setShowColors(false);
     const label = window.prompt('Button text', 'Open your dashboard');
     if (!label) return;
-    const url = window.prompt('Where should it go?', 'https://openhrapp.com');
+    const url = window.prompt('Where should it go?', 'https://pixenox.com');
     if (!url) return;
     if (!/^https?:\/\/|^\{\{/.test(url)) {
       window.alert('The link must start with http:// or https://, or be a placeholder like {{app_url}}.');
@@ -103,7 +103,7 @@ const EmailComposer: React.FC<Props> = ({ value, onChange, placeholders = [] }) 
   };
 
   const addLink = () => {
-    const url = window.prompt('Link address', 'https://openhrapp.com');
+    const url = window.prompt('Link address', 'https://pixenox.com');
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) {
       window.alert('Links must start with http:// or https://');

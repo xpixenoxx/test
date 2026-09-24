@@ -63,7 +63,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenHR Guides — Preview & Copy</title>
+  <title>Pixenox Guides — Preview & Copy</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,7 +115,7 @@ const html = `<!DOCTYPE html>
 <body>
 
 <div class="sidebar" id="sidebar">
-  <h2>OpenHR Tutorials (25)</h2>
+  <h2>Pixenox Tutorials (25)</h2>
 </div>
 
 <div class="main" id="main">

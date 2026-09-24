@@ -19,7 +19,7 @@ import {
  * than only in production.
  */
 
-const BUTTON = '<p><a href="https://openhrapp.com" data-btn="teal">Open your dashboard</a></p>';
+const BUTTON = '<p><a href="https://pixenox.com" data-btn="teal">Open your dashboard</a></p>';
 
 describe('email layout', () => {
   describe('buttons', () => {

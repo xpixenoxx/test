@@ -48,7 +48,7 @@ const FeaturesSection: React.FC = () => {
           <p className="text-dl-lg text-dl-muted leading-relaxed">
             HR software usually fails in one of two ways: it does too little and you end up back in
             spreadsheets, or it does too much and nobody can find the one screen they actually
-            needed. OpenHRApp covers the five things every organisation genuinely has to track —
+            needed. Pixenox covers the five things every organisation genuinely has to track —
             who was here, who is away, who works where, how the year went, and what the numbers say
             — and it treats each of them as a first-class feature rather than an upsell.
           </p>

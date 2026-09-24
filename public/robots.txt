@@ -68,7 +68,7 @@ User-agent: meta-externalagent
 Allow: /
 
 # Plain-text content index for answer engines — see scripts/generate-llms.mjs
-# LLM-Content: https://openhrapp.com/llms.txt
-# LLM-Full-Content: https://openhrapp.com/llms-full.txt
+# LLM-Content: https://pixenox.com/llms.txt
+# LLM-Full-Content: https://pixenox.com/llms-full.txt
 
-Sitemap: https://openhrapp.com/sitemap.xml
+Sitemap: https://pixenox.com/sitemap.xml

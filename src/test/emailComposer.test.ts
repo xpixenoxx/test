@@ -11,13 +11,13 @@ import { sanitizeEmailHtml, BUTTON_COLORS } from '../components/superadmin/Email
  * button-shaped gap whose label only appears when you select it.
  */
 
-const BUTTON = '<p><a href="https://openhrapp.com" data-btn="teal">Open your dashboard</a></p>';
+const BUTTON = '<p><a href="https://pixenox.com" data-btn="teal">Open your dashboard</a></p>';
 
 describe('email composer sanitising', () => {
   it('keeps the button anchor and its label', () => {
     const out = sanitizeEmailHtml(BUTTON);
     expect(out).toContain('Open your dashboard');
-    expect(out).toContain('href="https://openhrapp.com"');
+    expect(out).toContain('href="https://pixenox.com"');
   });
 
   it('keeps the data-btn VALUE, not just the attribute', () => {
