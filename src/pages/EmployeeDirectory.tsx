@@ -105,6 +105,7 @@ const EmployeeDirectory: React.FC<EmployeeDirectoryProps> = ({ user, selectedEmp
   // Confirmation dialog state for delete / offboard / reactivate
   const [confirmAction, setConfirmAction] = useState<{ type: 'delete' | 'offboard' | 'reactivate'; employee: Employee } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showInactive, setShowInactive] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -210,13 +211,14 @@ const EmployeeDirectory: React.FC<EmployeeDirectoryProps> = ({ user, selectedEmp
   const [formState, setFormState] = useState(initialNewEmpState);
 
   const filtered = useMemo(() => {
-    return employees.filter(emp => 
-      (emp.name || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      (emp.employeeId || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      (emp.department || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      (emp.email || '').toLowerCase().includes(debouncedSearch.toLowerCase())
-    );
-  }, [employees, debouncedSearch]);
+    return employees.filter(emp => {
+      if (!showInactive && emp.status === 'INACTIVE') return false;
+      return (emp.name || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        (emp.employeeId || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        (emp.department || '').toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        (emp.email || '').toLowerCase().includes(debouncedSearch.toLowerCase());
+    });
+  }, [employees, debouncedSearch, showInactive]);
 
   const toggleExportDept = (dept: string) => {
     setSelectedExportDepts(prev => prev.includes(dept) ? prev.filter(d => d !== dept) : [...prev, dept]);
@@ -639,8 +641,8 @@ const EmployeeDirectory: React.FC<EmployeeDirectoryProps> = ({ user, selectedEmp
         </div>
       )}
 
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
+        <div className="relative flex-1 w-full">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input 
             type="text" 
@@ -650,9 +652,20 @@ const EmployeeDirectory: React.FC<EmployeeDirectoryProps> = ({ user, selectedEmp
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button onClick={fetchEmployees} className="p-4 bg-slate-50 text-slate-500 rounded-2xl border border-slate-200 hover:bg-white transition-all">
-          <RefreshCw size={18} className={isLoading ? 'animate-spin' : ''} />
-        </button>
+        <div className="flex gap-4 w-full md:w-auto">
+          <label className="flex items-center gap-2 text-sm font-semibold text-slate-600 cursor-pointer p-4 bg-slate-50 rounded-2xl border border-slate-200 hover:bg-white transition-all flex-1 md:flex-none justify-center">
+            <input 
+              type="checkbox" 
+              className="rounded text-primary focus:ring-primary w-4 h-4"
+              checked={showInactive}
+              onChange={(e) => setShowInactive(e.target.checked)}
+            />
+            Show Inactive
+          </label>
+          <button onClick={fetchEmployees} className="p-4 bg-slate-50 text-slate-500 rounded-2xl border border-slate-200 hover:bg-white transition-all">
+            <RefreshCw size={18} className={isLoading ? 'animate-spin' : ''} />
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
