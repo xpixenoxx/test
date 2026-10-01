@@ -155,6 +155,18 @@ const Expenses: React.FC<ExpensesProps> = ({ user }) => {
         </div>
       </div>
 
+      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 sm:p-5 flex items-start gap-4 shadow-sm">
+        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+          <Receipt size={20} />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-blue-900">What is this section for?</h3>
+          <p className="text-sm text-blue-700 mt-1 leading-relaxed max-w-3xl">
+            This section is for submitting <strong>out-of-pocket business expenses</strong> (such as client meals, work travel, or software subscriptions) to get reimbursed by the company. <strong>This is not related to your personal salary or payroll.</strong>
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl border border-slate-200 p-5 flex items-start gap-4">
           <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0"><AlertTriangle size={18} /></div>

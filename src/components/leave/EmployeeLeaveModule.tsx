@@ -47,7 +47,7 @@ const EmployeeLeaveModule: React.FC<Props> = ({ user, balance, history, onRefres
   const [showForm, setShowForm] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ type: 'ANNUAL', start: '', end: '', reason: '' });
+  const [formData, setFormData] = useState({ type: 'ANNUAL', start: '', end: '', reason: '', isHourly: false, startTime: '', endTime: '' });
   
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [config, setConfig] = useState<AppConfig | null>(null);
@@ -94,15 +94,20 @@ const EmployeeLeaveModule: React.FC<Props> = ({ user, balance, history, onRefres
   }, [openLeaveId, history]);
 
   useEffect(() => {
-    if (formData.start && formData.end && config) {
-      const { days, details } = calculateNetDays(formData.start, formData.end);
-      setCalculatedDays(days);
-      setCalculationDetails(details);
+    if (formData.start && (formData.end || formData.isHourly) && config) {
+      if (formData.isHourly) {
+        setCalculatedDays(0);
+        setCalculationDetails('Hourly permission request');
+      } else {
+        const { days, details } = calculateNetDays(formData.start, formData.end);
+        setCalculatedDays(days);
+        setCalculationDetails(details);
+      }
     } else {
       setCalculatedDays(0);
       setCalculationDetails('');
     }
-  }, [formData.start, formData.end, config, holidays, employeeShift]);
+  }, [formData.start, formData.end, formData.isHourly, config, holidays, employeeShift]);
 
   const calculateNetDays = (startStr: string, endStr: string) => {
     if (!config) return { days: 0, details: '' };
@@ -288,28 +293,41 @@ const EmployeeLeaveModule: React.FC<Props> = ({ user, balance, history, onRefres
     setIsProcessing(true);
     setError(null);
     
-    if (calculatedDays <= 0) {
-      setError("Net leave duration is 0 days.");
-      setIsProcessing(false);
-      return;
-    }
-    const currentAvailable = getAvailableBalance(formData.type);
-    if (calculatedDays > currentAvailable) {
-      setError(`Insufficient Balance. Available: ${currentAvailable} days.`);
-      setIsProcessing(false);
-      return;
+    let finalDays = calculatedDays;
+    let finalReason = formData.reason;
+
+    if (formData.isHourly) {
+      finalDays = 0;
+      finalReason = `[Hourly Permission: ${formData.startTime} to ${formData.endTime}]\n${formData.reason}`;
+      if (!formData.startTime || !formData.endTime) {
+        setError("Please provide start and end time.");
+        setIsProcessing(false);
+        return;
+      }
+    } else {
+      if (calculatedDays <= 0) {
+        setError("Net leave duration is 0 days.");
+        setIsProcessing(false);
+        return;
+      }
+      const currentAvailable = getAvailableBalance(formData.type);
+      if (calculatedDays > currentAvailable) {
+        setError(`Insufficient Balance. Available: ${currentAvailable} days.`);
+        setIsProcessing(false);
+        return;
+      }
     }
 
     try {
       await employeeService.applyForLeave({
         type: formData.type as any,
         startDate: formData.start,
-        endDate: formData.end,
-        totalDays: calculatedDays,
-        reason: formData.reason
+        endDate: formData.isHourly ? formData.start : formData.end,
+        totalDays: finalDays,
+        reason: finalReason
       }, user);
       setShowForm(false);
-      setFormData({ type: leaveTypes[0]?.id || 'ANNUAL', start: '', end: '', reason: '' });
+      setFormData({ type: leaveTypes[0]?.id || 'ANNUAL', start: '', end: '', reason: '', isHourly: false, startTime: '', endTime: '' });
       onRefresh();
     } catch (err: any) {
       setError(err.message || "Submission failed");
@@ -400,16 +418,35 @@ const EmployeeLeaveModule: React.FC<Props> = ({ user, balance, history, onRefres
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1 min-w-0">
-                   <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">Start Date</label>
+                   <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">{formData.isHourly ? 'Date' : 'Start Date'}</label>
                    <input type="date" required className="w-full min-w-0 px-3 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm outline-none" value={formData.start} onChange={e => setFormData({...formData, start: e.target.value})} />
                 </div>
-                <div className="space-y-1 min-w-0">
-                   <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">End Date</label>
-                   <input type="date" required className="w-full min-w-0 px-3 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm outline-none" value={formData.end} onChange={e => setFormData({...formData, end: e.target.value})} />
-                </div>
+                {!formData.isHourly && (
+                  <div className="space-y-1 min-w-0">
+                     <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">End Date</label>
+                     <input type="date" required className="w-full min-w-0 px-3 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm outline-none" value={formData.end} onChange={e => setFormData({...formData, end: e.target.value})} />
+                  </div>
+                )}
+                {formData.isHourly && (
+                  <div className="flex gap-2">
+                    <div className="space-y-1 min-w-0 flex-1">
+                       <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">Start Time</label>
+                       <input type="time" required className="w-full min-w-0 px-3 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm outline-none" value={formData.startTime} onChange={e => setFormData({...formData, startTime: e.target.value})} />
+                    </div>
+                    <div className="space-y-1 min-w-0 flex-1">
+                       <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1">End Time</label>
+                       <input type="time" required className="w-full min-w-0 px-3 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm outline-none" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} />
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {formData.start && formData.end && (
+              <div className="flex items-center gap-2 px-1">
+                <input type="checkbox" id="isHourly" checked={formData.isHourly} onChange={e => setFormData({...formData, isHourly: e.target.checked})} className="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300" />
+                <label htmlFor="isHourly" className="text-sm font-semibold text-slate-600 cursor-pointer">Request Hourly Permission (e.g., 2-3 hours)</label>
+              </div>
+
+              {!formData.isHourly && formData.start && formData.end && (
                  <div className={`p-4 border rounded-2xl flex items-center gap-3 ${calculatedDays > getAvailableBalance(formData.type) ? 'bg-rose-50 border-rose-100' : 'bg-primary-light border-primary-light'}`}>
                     <Info size={18} className={calculatedDays > getAvailableBalance(formData.type) ? 'text-rose-500' : 'text-primary'} />
                     <div>
@@ -424,7 +461,7 @@ const EmployeeLeaveModule: React.FC<Props> = ({ user, balance, history, onRefres
                  <textarea required placeholder="Explain reason..." className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm min-h-[100px] outline-none" value={formData.reason} onChange={e => setFormData({...formData, reason: e.target.value})} />
               </div>
 
-              <button type="submit" disabled={isProcessing || calculatedDays > getAvailableBalance(formData.type)} className="w-full py-5 bg-primary text-white rounded-xl font-semibold uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 hover:bg-primary-hover transition-all">
+              <button type="submit" disabled={isProcessing || (!formData.isHourly && calculatedDays > getAvailableBalance(formData.type))} className="w-full py-5 bg-primary text-white rounded-xl font-semibold uppercase tracking-widest text-[10px] shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 hover:bg-primary-hover transition-all">
                  {isProcessing ? <RefreshCw className="animate-spin" size={16} /> : <Send size={16} />} Submit Application
               </button>
             </form>
