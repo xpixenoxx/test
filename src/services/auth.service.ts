@@ -24,8 +24,10 @@ export const authService = {
   async login(email: string, pass: string): Promise<{ user: User | null; error?: string }> {
     if (!isSupabaseConfigured()) return { user: null, error: 'Supabase not configured.' };
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password: pass,
     });
 
