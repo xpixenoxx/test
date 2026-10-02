@@ -24,10 +24,8 @@ export const authService = {
   async login(email: string, pass: string): Promise<{ user: User | null; error?: string }> {
     if (!isSupabaseConfigured()) return { user: null, error: 'Supabase not configured.' };
 
-    const normalizedEmail = email.trim().toLowerCase();
-
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: normalizedEmail,
+      email,
       password: pass,
     });
 
@@ -107,7 +105,6 @@ export const authService = {
     if (!isSupabaseConfigured()) return { success: false, error: 'System offline' };
 
     const password = data.password;
-    const normalizedEmail = data.email.trim().toLowerCase();
 
     try {
       // Step 1: Create the organization row first
@@ -132,7 +129,7 @@ export const authService = {
 
       // Step 2: Sign up the user with metadata
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email: normalizedEmail,
+        email: data.email,
         password,
         options: {
           data: {
@@ -185,7 +182,7 @@ export const authService = {
           .upsert({
             id: userId,
             name: data.adminName,
-            email: normalizedEmail,
+            email: data.email,
             organization_id: finalOrgId,
             role: 'ADMIN',
             verified: true,
